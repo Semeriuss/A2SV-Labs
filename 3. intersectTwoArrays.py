@@ -43,8 +43,9 @@ def intersection(lst1, lst2):
     lst = []
     
     while(i<len(ls1) and j<len(ls2)):
+        # print(i,ls1[i], "  ---  ",j, ls2[j])
         if(ls1[i] == ls2[j]):
-            lst.append(ls1[i]) if ls1[i] not in ls1[:i] else lst
+            lst.append(ls1[i]) if i==0 or ls1[i] != lst[-1] else lst
             i+=1
             j+=1
         elif(ls1[i] < ls2[j]):
@@ -60,7 +61,7 @@ lst2 = [1,3]
 arr2 = [4,4,9,5]
 arr1 = [9,4,9,8,4]
 
-arr3 = [2,6,2,9,1]
-arr4 = [7,1]
+arr3 = [1,2,2,1]
+arr4 = [2,2]
 
 print(intersection(arr3, arr4))
