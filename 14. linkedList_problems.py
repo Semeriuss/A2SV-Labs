@@ -151,5 +151,5 @@ ll.printLinkedList()
 ll.removeDuplicates()
 ll.printLinkedList()
 ll.subList(2)
-print(ll.indexFromLast(1))
+print(ll.indexFromLast(4))
 
