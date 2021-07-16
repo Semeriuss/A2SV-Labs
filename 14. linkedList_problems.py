@@ -26,7 +26,15 @@ class LinkedList:
         while current.next:
             if current.next.value == value:
                 current.next = current.next.next
-            current = current.next            
+            current = current.next
+
+    def deleteMiddleNode(self, node):
+        """delete a node in the middle given the node."""
+        if node is None or node.next is None:
+            return 
+        next_node = node.next
+        node.value = next_node.value     
+        node.next = next_node.next
 
     def printLinkedList(self):
         current = self.head
@@ -35,18 +43,6 @@ class LinkedList:
             current = current.next
         print()
 
-    def removeDuplicates(self):
-        root = self.head
-        while root:
-            shoot = root.next
-            while shoot and shoot.next:
-                if root.value == shoot.value:
-                    shoot.next = shoot.next.next
-                else:
-                    shoot = shoot.next
-            if shoot and root.value == shoot.value:
-                shoot = shoot.next                
-            root = root.next
             
     # O(n^2) double loop method
     def removeDuplicates(self):  
@@ -90,6 +86,30 @@ class LinkedList:
             current = current.next
             index += 1
         print()
+
+
+    def partition(self, k):
+        """Partition linked around value k.
+           All nodes less than k come before all nodes
+           greater than or equal to k
+        """
+        current = self.head
+        head = current
+        tail = current
+        while current:
+            nextNode = current.next
+            if current.value < k:
+                current.next = head
+                head = current
+            else:
+                tail.next = current
+                tail = current
+            current = nextNode
+        tail.next = None
+        self.head = head
+                
+                
+
 
     def indexFromLast(self, k):
         """Return kth element starting from last.
@@ -148,8 +168,9 @@ ll.appendToTail(3)
 ll.appendToTail(3)
 ll.appendToTail(3)
 ll.printLinkedList()
-ll.removeDuplicates()
+##ll.removeDuplicates()
+##ll.printLinkedList()
+##ll.subList(2)
+##print(ll.indexFromLast(4))
+ll.partition(4)
 ll.printLinkedList()
-ll.subList(2)
-print(ll.indexFromLast(4))
-
