@@ -116,7 +116,6 @@ def productExceptSelf(nums):
 
     zeroCount = countZeros(nums)
     productWithoutZero = multiplyWithoutZero(nums)
-
     return productWithoutSelf(nums, productWithoutZero, zeroCount)
 
     
