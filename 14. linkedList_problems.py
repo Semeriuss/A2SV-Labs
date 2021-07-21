@@ -5,12 +5,23 @@ class Node:
 	    
 class LinkedList:
     def __init__(self, head=None):
-        if head:
+        if isinstance(head, (int, float)):
             self.head = Node(head)
             self.length = 1
+        elif isinstance(head, list) and head != []:
+            self.head = Node(head[0])
+            self.convertListToLinkedList(head[1:])
+            self.length = len(head)
         else:
             self.head = None
             self.length = 0
+
+    def convertListToLinkedList(self, lst):
+        current = self.head
+        for i in range(len(lst)):
+            current.next = Node(lst[i])
+            current = current.next
+            
 
     def appendToTail(self, element):
         current = self.head
@@ -180,6 +191,7 @@ class LinkedList:
         self.head = None
         for value in nodeList:
             self.appendToHead(value)
+        return self
         
 def sumLinkedLists(head1, head2):
     num1 = head1.getAsNum()
@@ -189,7 +201,42 @@ def sumLinkedLists(head1, head2):
     num4 = head2.getAsNumReversed()
     return f'The sum of {num1} and {num2} = {num1 + num2}\nThe sum of {num3} and {num4} = {num3 + num4}'
 
+def sumLinkedLists(head1, head2):
+    result = 0
+    digit = 1
+    sumListRev = LinkedList()
+    while head1 and head2:
+        unit, tenth = (head1.value + head2.value)%10, (head1.value + head2.value)//10
+        result += digit * unit
+        sumListRev.appendToTail(unit)
+        head1 = head1.next
+        head2 = head2.next
+        digit *= 10
+        if head1:
+            head1.value += tenth
+        elif head2:
+            head2.value += tenth
+        else:
+            result += digit * tenth
+            sumListRev.appendToTail(tenth)
 
+    while head1:
+        result += digit * head1.value
+        sumListRev.appendToTail(head1.value)
+        head1 = head1.next
+
+    while head2:
+        result += digit * head2.value
+        sumListRev.appendToTail(head2.value)
+        head2 = head2.next
+            
+    print("Linked List in reverse order")
+    sumListRev.printLinkedList()
+    print("Linked List in digit order")
+    sumList = sumListRev.reverse()
+    sumList.printLinkedList()
+    print("Int result")
+    return result
 
 ll = LinkedList()
 ll.appendToTail(1)
@@ -240,14 +287,22 @@ ll.reverse()
 ll.printLinkedList()
 
 print("Sum List")
-linkedList1 = LinkedList(7)
+linkedList1 = LinkedList(1)
+linkedList1.appendToTail(7)
 linkedList1.appendToTail(1)
 linkedList1.appendToTail(6)
+linkedList1.reverse()
 
 linkedList2 = LinkedList(5)
 linkedList2.appendToTail(9)
 linkedList2.appendToTail(2)
+linkedList2.reverse()
 
-print(sumLinkedLists(linkedList1, linkedList2))
+linkedList3 = LinkedList([1,9,7,8])
+linkedList3.reverse()
+linkedList4 = LinkedList([6,8,5])
+linkedList4.reverse()
+
+print(sumLinkedLists(linkedList3.head, linkedList4.head))
 
 
