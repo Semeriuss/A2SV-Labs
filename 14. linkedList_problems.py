@@ -2,7 +2,7 @@ class Node:
     def __init__(self, value):
         self.value = value
         self.next = None
-	    
+
 class LinkedList:
     def __init__(self, head=None):
         if isinstance(head, (int, float)):
@@ -76,7 +76,7 @@ class LinkedList:
 
     def printLinkedList(self):
         current = self.head
-        while current is not None:
+        while current:
             print(current.value, end = " ")
             current = current.next
         print()
@@ -192,6 +192,38 @@ class LinkedList:
         for value in nodeList:
             self.appendToHead(value)
         return self
+
+    def reverse(self):
+        """Reverse a linked list using stack."""
+        root = self.head
+        if root is None:
+            return
+        nodeList = []
+        while root:
+            nodeList.append(root.value)
+            temp = root
+            root = root.next
+            temp = None
+        self.head = None
+        while nodeList != []:
+            self.appendToTail(nodeList.pop())
+        return self
+ 
+
+    def toString(self):
+        """Returns the linked list as a string."""
+        current = self.head
+        result = []
+        while current:
+            if isinstance(current.value, str):
+                result.append(current.value)
+            elif isinstance(current.value, (int, float)):
+                result.append(str(current.value))
+            else:
+                raise ValueError()
+            current = current.next
+        return "".join(result)
+        
         
 def sumLinkedLists(head1, head2):
     num1 = head1.getAsNum()
@@ -237,6 +269,34 @@ def sumLinkedLists(head1, head2):
     sumList.printLinkedList()
     print("Int result")
     return result
+
+def isPalindrome(linkedList):
+    return linkedList.toString() == linkedList.reverse().toString()
+
+def isPalindrome(linkedList):
+    fast = linkedList.head
+    slow = linkedList.head
+    stack = []
+
+    while(fast and fast.next):
+        stack.append(slow)
+        slow = slow.next
+        fast = fast.next.next
+
+    #if length of linkedList is odd
+    if (fast is None):
+        slow = slow.next
+
+    print(len(stack), slow.value)
+ 
+    while(slow and stack != []):
+        top = stack.pop()
+        if slow.value != top.value:
+            return False
+        slow = slow.next
+
+    return True
+        
 
 ll = LinkedList()
 ll.appendToTail(1)
@@ -304,5 +364,9 @@ linkedList4 = LinkedList([6,8,5])
 linkedList4.reverse()
 
 print(sumLinkedLists(linkedList3.head, linkedList4.head))
+
+print("Is Palindrome")
+linkedList5 = LinkedList(['a','p','a'])
+print(isPalindrome(linkedList5))
 
 
