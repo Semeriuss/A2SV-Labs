@@ -12,6 +12,9 @@ class LinkedList:
             self.head = Node(head[0])
             self.convertListToLinkedList(head[1:])
             self.length = len(head)
+        elif isinstance(head, Node):
+            self.head = head
+            self.length = 1
         else:
             self.head = None
             self.length = 0
@@ -296,6 +299,47 @@ def isPalindrome(linkedList):
         slow = slow.next
 
     return True
+
+# O(A+B) time O(n) space
+def intersects(linkedList1, linkedList2):
+    hashSet = set()
+    current1 = linkedList1.head
+    while current1:
+        hashSet.add(current1)
+        current1 = current1.next
+
+    current2 = linkedList2.head
+    while current2:
+        if current2 in hashSet:
+            return True
+        current2 = current2.next
+
+    return False
+
+# O(A+B) time O(1) space
+def intersects(linkedList1, linkedList2):
+    
+    length1 = linkedList1.length
+    length2 = linkedList2.length
+    
+    smallerLinkedList = linkedList1 if length1 <= length2 else linkedList2
+    largerLinkedList = linkedList1 if length1 > length2 else linkedList2
+
+    current1 = smallerLinkedList.head
+    current2 = largerLinkedList.head
+
+    counter = 0
+    while counter < (max(length1, length2) - min(length1, length2)):
+        current2 = current2.next
+        counter += 1
+
+    while current1:
+        if current1.next == current2.next:
+            return current1.value
+        current1 = current1.next
+        current2 = current2.next
+
+    return None
         
 
 ll = LinkedList()
@@ -368,5 +412,41 @@ print(sumLinkedLists(linkedList3.head, linkedList4.head))
 print("Is Palindrome")
 linkedList5 = LinkedList(['a','p','a'])
 print(isPalindrome(linkedList5))
+
+print("Intersects")
+linkedList6 = LinkedList([1,2,3,4,5,6])
+current6 = linkedList6.head.next.next
+linkedList7 = LinkedList(current6)
+linkedList7.appendToTail(2)
+linkedList7.appendToTail(1)
+linkedList7.appendToTail(0)
+
+linkedList6.printLinkedList()
+linkedList7.printLinkedList()
+print("LL6 intersects LL7 =>", intersects(linkedList6, linkedList7))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
