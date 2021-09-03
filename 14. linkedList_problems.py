@@ -32,7 +32,10 @@ class LinkedList:
         if current:            
             while current.next:
                 current = current.next
-            current.next = Node(element)
+            if isinstance(element, Node):
+                current.next = element
+            else:
+                current.next = Node(element)
         else:
             self.head = Node(element)
 
@@ -116,6 +119,21 @@ class LinkedList:
                 hashset.add(front.value)
                 rear = front
             front = front.next
+
+    def circularNode(self):
+        """Return circular node if exists"""
+        rear = self.head
+        front = rear.next
+        hashset = set()
+        hashset.add(rear)
+        while front:
+            if front in hashset:
+                return front
+            else:
+                hashset.add(front)
+                rear = front
+            front = front.next
+        return
 
     def subList(self, k):
         """Returns elements from the kth index to last."""
@@ -426,7 +444,14 @@ linkedList7.printLinkedList()
 print("LL6 intersects LL7 =>", intersects(linkedList6, linkedList7))
 
 
-
+print("Circular Node")
+linkedList8 = LinkedList([1,2,3])
+linkedList9 = LinkedList(linkedList8.head)
+linkedList9.appendToTail(6)
+linkedList9.appendToTail(8)
+linkedList9.appendToTail(linkedList8.head)
+##linkedList9.printLinkedList()
+print("CN: ", linkedList9.circularNode())
 
 
 
