@@ -36,6 +36,30 @@ def containsNearbyDuplicate(nums, k):
                 nums_dict[num].append(i)
         return False
 
-nums, k = ([1,0,1,1],1)
-nums, k = ([99,99], 2)
-print(containsNearbyDuplicate(nums, k))
+tests = [([1,0,1,1],1),
+         ([99,99], 2)]
+
+for test in tests:
+        nums, k = test
+        print(containsNearbyDuplicate(nums, k))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
