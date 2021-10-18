@@ -3,9 +3,7 @@ import sys
 
 input = sys.stdin.readline
 s = input()
-inputChars = list(s[:len(s)])
-
-print(inputChars)
+inputString = s
     
 def minKDominant(listOfChars):
     
@@ -37,19 +35,46 @@ def minKDominant(listOfChars):
         k = min(currentK, k)
     return k
 
-def minKDominant(inputChars):
-    n = len(inputChars)
+def minKDominant(inputString):
+    n = len(inputString)
     k = n
 
+    # abb
+    # currentK = 2, 
     for pos in range(26):
         letter = chr(ord('a') + pos)
-        currentk = last_occurence = 0
-        for i, char in enumerate(inputChars):
+        currentk = 0
+        last_occurence = -1
+
+        #i = 0,  char = a, letter = b
+        for i, char in enumerate(inputString):
             if letter == char:
                 currentk = max(currentk, i - last_occurence)
+
+                #lastOccurence = 0,  
                 last_occurence = i
+
         currentk = max(currentk, n - last_occurence)
+
+        #k = 2
         k = min(currentk, k)
     return k
 
-print(minKDominant(inputChars))
+def minKDominant(inputString):
+    n = len(inputString.split()[0])
+    k = n
+ 
+    for pos in range(26):
+        letter = chr(ord('a') + pos)
+        currentk = 0
+        last_occurence = -1
+        for i, char in enumerate(inputString):
+            if letter == char:
+                currentk = max(currentk, i - last_occurence)
+                last_occurence = i
+                print(currentk, last_occurence, n)
+        currentk = max(currentk, n - last_occurence)
+        k = min(currentk, k)
+    return k
+ 
+print(minKDominant(inputString))
