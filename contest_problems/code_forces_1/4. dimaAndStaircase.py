@@ -1,6 +1,5 @@
 import sys
 
-
 input = sys.stdin.readline
 nStairs = int(input())
 
