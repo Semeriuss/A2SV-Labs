@@ -20,6 +20,7 @@ def checkSubarraySum(nums, k):
             
     return False
 
-
-print(checkSubarraySum([23, 2, 4, 6, 7], 13))
+nums = [23, 2, 4, 6, 7]
+k = 13
+print(checkSubarraySum(nums, k))
         
