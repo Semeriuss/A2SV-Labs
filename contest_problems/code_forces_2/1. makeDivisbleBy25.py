@@ -15,9 +15,25 @@ def _helper(num, count):
     if num < 25:
         return count
     print("hherere", int(str(num)[len(str(num))-1:]))
-    if int(str(num)[len(str(num))-1:]) == 0 or int(str(num)[len(str(num))-1:]) == 5:
-        if int(str(num)[len(str(num))-2:]) % 25 == 0:
+    if int(str(num)[len(str(num))-1:]) == 0:
+        print("checkereeer", int(str(num)[len(str(num))-2:len(str(num))-1]))
+        if int(str(num)[len(str(num))-2:len(str(num))-1]) == 0 or int(str(num)[len(str(num))-2:len(str(num))-1]) == 5:
             return count
+        else:
+            print("here", num)
+            count += 1
+            num = int(str(num)[:len(str(num))-2] + str(num)[len(str(num))-1:])
+            print("after here", num)
+            return _helper(num, count)
+    elif int(str(num)[len(str(num))-1:]) == 5:
+        print("checkereeer", int(str(num)[len(str(num))-2:len(str(num))-1]))
+        if int(str(num)[len(str(num))-2:len(str(num))-1]) == 2 or int(str(num)[len(str(num))-2:len(str(num))-1]) == 7:
+            return count
+        elif int(str(num)[len(str(num))-2:len(str(num))-1]) == 0:
+            if len(str(num)) >= 3 and int(str(num)[len(str(num))-3:len(str(num))-2]) == 0 or int(str(num)[len(str(num))-3:len(str(num))-2]) == 5:
+                count += 1
+                num = int(str(num)[:len(str(num))-1])
+                return _helper(num, count)
         else:
             print("here", num)
             count += 1
