@@ -7,7 +7,21 @@ class Node:
         self.children = children
 
 class Solution:
-    def bfs(self, root: 'Node') -> int:
+    def bfsR(self, root: 'Node', queue, visited) -> None:
+        if not queue:
+            return 
+
+        current = root
+        visited.add(current)
+        print(current.val, end = " -> ")
+        if current.children is not None:
+            for neighbor in current.children:
+                if neighbor not in visited:
+                    queue.append(neighbor)
+                    visited.add(neighbor)
+            self.bfsR(queue.popleft(), queue, visited)
+
+    def bfs(self, root: 'Node') -> None:
 
         queue = deque()
         visited = set()
@@ -16,7 +30,7 @@ class Solution:
         visited.add(root)
         while queue:
             current = queue.popleft()
-            print(current.val, end = " ")
+            print(current.val, end = " -> ")
             if current.children is not None:
                 for neighbor in current.children:
                     if neighbor not in visited:
@@ -33,4 +47,4 @@ graph = Node(val = 1,
                 Node(val = 2), 
                 Node(val = 4)])
 print(Solution().bfs(graph))
-
+print(Solution().bfsR(graph, deque([graph]), set()))
