@@ -1,7 +1,13 @@
 import heapq
+import bisect
 from typing import List
 
 class Solution:
+    def lastStoneWeight2(self, stones: List[int]) -> int:
+        stones.sort()
+        while len(stones) > 1:
+            bisect.insort(stones, stones.pop() - stones.pop())
+        return stones[0] if len(stones) == 1 else 0
     def lastStoneWeight(self, stones: List[int]) -> int:
         heapq._heapify_max(stones)
         
@@ -27,3 +33,4 @@ stones = [1]
 stones = [4,5,2,7,6]
      
 print(Solution().lastStoneWeight(stones))
+print(Solution().lastStoneWeight2(stones))
