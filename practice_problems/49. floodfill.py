@@ -1,48 +1,41 @@
-from typing import Collection, List
 from collections import deque
-
+from typing import List, Tuple
 class Solution:
     def floodFill(self, image: List[List[int]], sr: int, sc: int, newColor: int) -> List[List[int]]:
-        colorToBeRemoved = image[sr][sc]
+        
+        colorToBeFilled = image[sr][sc]
         image[sr][sc] = newColor
-
-        def bfs(sr, sc, image, colorToBeRemoved, newColor, rowLength, colLength, visited):
-            dirs = [(0,1), (0, -1), (1, 0), (-1, 0)]
-            queue = deque([(sr, sc)])
-            visited = set()
-
-            while queue:
-                sr, sc = queue.popleft()
-                for dir in dirs:
-                    current_row, current_col = 0, 0
-                    current_row = sr + dir[0]
-                    current_col = sc + dir[1]
-                    if 0 <= current_row < rowLength and 0 <= current_col < colLength:
-                        if image[current_row][current_col] == colorToBeRemoved and (current_row, current_col) not in visited:
-                            image[current_row][current_col] = newColor
-                            queue.append((current_row, current_col))
-                            visited.add((current_row, current_col))
-        bfs(sr, sc, image, colorToBeRemoved, newColor, len(image), len(image[0]), set())
-
+        
+        index = (sr, sc)
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        
+        
+        def fitsBoundary(row, col):
+            return 0 <= row < len(image) and 0 <= col < len(image[0])
+        
+        def bfs(index: 'Tuple', image: List[List[int]]):
             
-
-        def dfs(sr, sc, image, colorToBeRemoved, newColor, rowLength, colLength, visited):
-            dirs = [(0,1), (0, -1), (1, 0), (-1, 0)]
-            for dir in dirs:
-                current_row, current_col = 0, 0
-                current_row = sr + dir[0]
-                current_col = sc + dir[1]
-                if 0 <= current_row < rowLength and 0 <= current_col < colLength:
-                    if image[current_row][current_col] == colorToBeRemoved and (current_row, current_col) not in visited:
-                        image[current_row][current_col] = newColor
-                        visited.add((current_row, current_col))
-                        dfs(current_row, current_col, image, colorToBeRemoved, newColor, rowLength, colLength, visited)
-        # dfs(sr, sc, image, colorToBeRemoved, newColor, len(image), len(image[0]), set())
-        return image
+            visited = set()
+            queue = deque([index])
+            visited.add(index)
+            
+            while queue:
+                current_row, current_col = queue.popleft()
+                for direction in directions:
+                    next_row, next_col = 0, 0
                     
-
-
-print(Solution().floodFill([[1,1,1],[1,1,0],[1,0,1]], 1, 1, 2))
-                
-
-
+                    next_row = current_row + direction[0]
+                    next_col = current_col + direction[1]
+                    
+                    next_state = next_row, next_col
+                    
+                    if fitsBoundary(next_row, next_col) and next_state not in visited:
+                        if image[next_row][next_col] == colorToBeFilled:
+                            image[next_row][next_col] = newColor
+                            queue.append(next_state)
+                            visited.add(next_state)
+        
+        bfs(index, image)
+        return image
+            
+            
