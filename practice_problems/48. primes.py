@@ -12,8 +12,8 @@ def isPrime(n):
             return False
     return True
 
-def primeSumsOf(n):
-    primes = [i for i in range(2, n) if isPrime(i)] 
+def primeSumsOf(n): 
+    primes = [i for i in range(2, n) if isPrime(i)]
     primeSum = set()
     for prime in primes:
         if prime in primeSum:
@@ -21,8 +21,45 @@ def primeSumsOf(n):
         primeSum.add(n - prime)
     return -1
 
-# custom test case
+def primeSumsOf(n):
+    primeSum = set([2])
+    for num in range(2, n):
+        if isPrime(num) and isPrime(n - num) and num in primeSum:
+            return f'{num} {n - num}'
+        primeSum.add(n - num)
+    return -1
+
+# sieve of erasthones
+def sieveOfErasthones(n):
+    primes = [True for _ in range(n + 1)]
+    primes[0] = primes[1] = False
+
+    p = 2
+    while p*p <= n:
+        if(primes[p]):
+            for j in range(p**2, n+1, p):
+                primes[j] = False
+        p += 1
+    return primes
+
+def primeSumOf(n):
+    primes = [True for _ in range(n + 1)]
+    primes[0] = primes[1] = False
+    primeSum = set([i for i in range(n + 1)])
+    p = 2
+    while p*p <= n:
+        if(primes[p]):
+            for j in range(p**2, n+1, p):
+                primes[j] = False
+        p += 1
+
+    return primes
+    
+
+    
+
+## custom test case
 # for n in range(2, 20):
-#     print(primeSumsOf(n))
+#     print(n, primeSumsOf(n))
 
 print(primeSumsOf(n))
