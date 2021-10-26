@@ -7,20 +7,6 @@ class Node:
         self.children = children
 
 class Solution:
-    def bfsR(self, root: 'Node', queue, visited) -> None:
-        if not queue:
-            return 
-
-        current = root
-        visited.add(current)
-        print(current.val, end = " -> ")
-        if current.children is not None:
-            for neighbor in current.children:
-                if neighbor not in visited:
-                    queue.append(neighbor)
-                    visited.add(neighbor)
-            self.bfsR(queue.popleft(), queue, visited)
-
     def bfs(self, root: 'Node') -> None:
 
         queue = deque()
