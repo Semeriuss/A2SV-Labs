@@ -6,9 +6,8 @@ class Solution:
 
         def isNumericallyBalanced(num):
             digits = list(str(num))
-            counts = collections.Counter(digits)
-
-            return all(count == int(digit) for digit, count in counts.items())
+            digitsCount = collections.Counter(digits)
+            return all(digitCount == int(digit) for digit, digitCount in digitsCount.items())
             
         nextNumber = n + 1
         while not isNumericallyBalanced(nextNumber):
