@@ -1,11 +1,17 @@
 import sys
-from math import factorial
+from math import factorial, comb
 from itertools import combinations
 
 input = sys.stdin.readline
 n, m, t = tuple(list(map(int, input().split())))
 
 def findCombination(n, m, t):
+
+
+    def getComb(chosen_boys, chosen_girls):
+        nonlocal n, m
+        return comb(n, chosen_boys) * comb(m, chosen_girls)
+        
     
     def getCombination(chosen_boys, chosen_girls):
         nonlocal n, m
@@ -23,12 +29,12 @@ def findCombination(n, m, t):
         combos.append([minBoysCombo, minGirlsCombo])
         minBoysCombo += 1
         minGirlsCombo -= 1
-    
+
     print(combos)
     for combo in combos:
-        ways += getCombination(combo[0], combo[1])
+        # ways += getCombination(combo[0], combo[1])
+        ways += getComb(combo[0], combo[1])
     
     return ways
 
 print(findCombination(n, m, t))
-
