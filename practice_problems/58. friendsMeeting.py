@@ -5,6 +5,7 @@ a = int(input())
 b = int(input())
 
 # 25 minutes ====> 2 tries, 1 - runtime
+# codeforces Friends Meeting
 def minimumTiredness(a, b):
     
     def generateMotion(motion):
