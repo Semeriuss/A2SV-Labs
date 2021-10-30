@@ -17,12 +17,16 @@ def kingEscape(kingPos, queenPos, escapePos):
     queenX, queenY = queenPos
     escapeX, escapeY = escapePos
 
-    canEscape = True
+    canEscape = False
 
-    if ((kingX > queenX) and (queenX > escapeX)) or ((escapeX > queenX) and (queenX > kingX)):
-        canEscape = False
-    if ((kingY > queenY) and (queenY > escapeY)) or ((escapeY > queenY) and (queenY > kingY)):
-        canEscape = False
+    if (kingX > queenX) and (escapeX > queenX) and (kingY > queenY) and (escapeY > queenY):
+        canEscape = True
+    if (kingX < queenX) and (escapeX < queenX) and (kingY < queenY) and (escapeY < queenY):
+        canEscape = True
+    if (kingX > queenX) and (escapeX > queenX) and (kingY < queenY) and (escapeY < queenY):
+        canEscape = True
+    if (kingX < queenX) and (escapeX < queenX) and (kingY > queenY) and (escapeY > queenY):
+        canEscape = True
     
     if canEscape:
         return 'YES'
@@ -30,7 +34,10 @@ def kingEscape(kingPos, queenPos, escapePos):
 
 # tests = [((1,3), (4,4), (3,1)),
 #          ((2,3), (4,4), (1,6)),
-#          ((1,2), (3,5), (6,1))]
+#          ((1,2), (3,5), (6,1)),
+#          ((5,0), (1,2), (0,5)),
+#          ((0,12), (10,10), (12,12)),
+#          ((0,12), (10, 10), (12,0))]
 # for test in tests:
 #     kingSquare, queenSquare, escapeSquare = test
 #     print(kingEscape(kingSquare, queenSquare, escapeSquare))
