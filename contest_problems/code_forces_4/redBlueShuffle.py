@@ -1,6 +1,5 @@
 import sys
-import collections
-from math import factorial, perm
+from math import perm
 
 
 input = sys.stdin.readline
@@ -12,17 +11,15 @@ for i in range(testCases):
     cardSize = int(input())
 
     input = sys.stdin.readline
-    reds = list((input()))
+    reds = list(input().rstrip())
 
     input = sys.stdin.readline
-    blues = list((input()))
+    blues = list(input().rstrip())
 
     tests.append((reds, blues))
 
 def redBlueShuffle(reds, blues):
-    
     redCount, blueCount = 0, 0
-
     for i in range(len(reds)):
         if reds[i] > blues[i]:
             redCount += 1
@@ -32,19 +29,10 @@ def redBlueShuffle(reds, blues):
             redCount += 1
             blueCount += 1
 
-    # redDuplicates, blueDuplicates = collections.Counter(reds), collections.Counter(blues)
-    # maxRedRepetition = max(redDuplicates.values())
-    # maxBlueRepetition = max(blueDuplicates.values())
-    # k = 0 if min(maxRedRepetition, maxBlueRepetition) == 1 else min(maxRedRepetition, maxBlueRepetition)
 
-    toBePermuted = reds if len(set(reds)) > len(set(blues)) else blues
-    possiblePermutations = perm(len(toBePermuted))
-    blueWins = blueCount/(redCount + blueCount) * possiblePermutations
-    redWins = redCount/(redCount + blueCount) * possiblePermutations
-
-    if blueWins > redWins:
+    if blueCount > redCount:
         return 'BLUE'
-    elif redWins > blueWins:
+    elif redCount > blueCount:
         return 'RED'
     else:
         return 'EQUAL'
