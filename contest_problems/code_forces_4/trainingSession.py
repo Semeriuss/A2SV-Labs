@@ -19,24 +19,16 @@ for i in range(testcases):
 def trainingSession(problemSet):
     topics, difficulties = defaultdict(int), defaultdict(int)
 
-    for topic, difficulty in problemSet:
+    for topic, diff in problemSet:
         topics[topic] += 1
-        difficulties[difficulty] += 1
+        difficulties[diff] += 1
     
-    repeatedOnes = 1
-    repeats = False
-    for count in topics.values():
-        if count > 1:
-            repeats = True
-            repeatedOnes *= (count - 1)
-
-    for count in difficulties.values():
-        if count > 1:
-            repeats = True
-            repeatedOnes *= (count - 1)
-
-        
-    possibleWays = comb(len(problemSet), 3) - repeatedOnes if repeats else comb(len(problemSet), 3)
+    possibleWays = comb(len(problemSet), 3)
+    
+    for topic, difficulty in problemSet:
+        repeatedOnes = (topics[topic] - 1) * (difficulties[difficulty] - 1)
+        possibleWays -= repeatedOnes        
+    
     return possibleWays
 
 for test in tests:
