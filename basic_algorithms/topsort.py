@@ -4,16 +4,41 @@ import collections
 
 
 def topologicalsort(graph):
+    NUMBER_OF_NODES = len(graph.keys())
+    
     incoming = defaultdict(int)
     for node in graph.keys():
         incoming[node]
         for ins in graph[node]:
             incoming[ins] += 1
+
+    topsort = []
+    def dfs(node):
+        nonlocal graph, incoming, topsort
+
+        if incoming[node] != 0:
+            return 
+        
+        topsort.append(node)
+        for neighbor in graph[node]:
+            incoming[neighbor] -= 1
+            dfs(neighbor)
+        return 
+    
+    independentNodes = [node for node in incoming.keys() if incoming[node] == 0]
+    for node in independentNodes:
+        dfs( node)
+    
+    if NUMBER_OF_NODES != len(topsort):
+            return "Impossible to sort topologically"
+        
+    # return " ".join(topsort)  # dfs implementation
+    
+
+
     
     def bfs():
         nonlocal incoming, graph
-
-        numberOfNodes = len(graph.keys())
 
         queue = collections.deque()
         topsort = []
@@ -29,12 +54,12 @@ def topologicalsort(graph):
                 if incoming[neighbor] == 0:
                     queue.append(neighbor)
 
-        if numberOfNodes != len(topsort):
+        if NUMBER_OF_NODES != len(topsort):
             return "Impossible to sort topologically"
         
         return " ".join(topsort)
 
-    return bfs()
+    # return bfs() # bfs implementation
 
 
 
@@ -57,4 +82,4 @@ graph2 = {
         'k' : ['h']
         }
 
-print(topologicalsort(graph2))
+print(topologicalsort(graph))
