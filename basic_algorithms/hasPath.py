@@ -14,6 +14,18 @@ def hasPath(graph, src, dst):
     
     return dfs(graph, src, dst)
 
+def hasPath(graph, src, dst):
+    if src == dst: return True
+    
+    for neighbor in graph[src]:
+        if hasPath(graph, neighbor, dst): return True
+            
+    return False
+
+def hasPath(graph, src, dst):
+    if src == dst: return True
+    return any(hasPath(graph, neighbor, dst) for neighbor in graph[src])
+
 graph = {
         'f' : ['g', 'i'],
         'g' : ['h'],
@@ -23,4 +35,4 @@ graph = {
         'k' : []
         }
 
-print(hasPath(graph, 'f', 'k'))
+print(hasPath(graph, 'f', 'j'))
