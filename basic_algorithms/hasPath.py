@@ -1,3 +1,6 @@
+import collections
+
+
 def hasPath(graph, src, dst):
 
     visited = set()
@@ -26,6 +29,20 @@ def hasPath(graph, src, dst):
     if src == dst: return True
     return any(hasPath(graph, neighbor, dst) for neighbor in graph[src])
 
+def hasPathB(graph, src, dst):
+    if src == dst: return True
+
+    queue = collections.deque()
+    queue.append(src)
+
+    while queue:
+        current = queue.popleft()
+        for neighbor in graph[current]:
+            if neighbor == dst:
+                return True
+            queue.append(neighbor)
+    return False
+                
 graph = {
         'f' : ['g', 'i'],
         'g' : ['h'],
@@ -35,4 +52,4 @@ graph = {
         'k' : []
         }
 
-print(hasPath(graph, 'f', 'j'))
+print(hasPathB(graph, 'f', 'k'))
