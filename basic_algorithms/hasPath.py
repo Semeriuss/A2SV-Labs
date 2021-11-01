@@ -22,12 +22,10 @@ def hasPath(graph, src, dst):
     
     for neighbor in graph[src]:
         if hasPath(graph, neighbor, dst): return True
-            
     return False
 
 def hasPath(graph, src, dst):
-    if src == dst: return True
-    return any(hasPath(graph, neighbor, dst) for neighbor in graph[src])
+    return src == dst or any(hasPath(graph, neighbor, dst) for neighbor in graph[src])
 
 def hasPathB(graph, src, dst):
     if src == dst: return True
@@ -52,4 +50,4 @@ graph = {
         'k' : []
         }
 
-print(hasPathB(graph, 'f', 'k'))
+print(hasPath(graph, 'f', 'k'))
