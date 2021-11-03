@@ -7,18 +7,24 @@ n, target = tuple(list(map(int, input().split())))
 input = sys.stdin.readline
 portals = list(map(int, input().split()))
 
-def pathExists(target, portals):
+def pathExists(n, target, portals):
     transportaionMap = defaultdict(list)
 
     for i, cell in enumerate(portals):
-        transportaionMap[cell].append((i + 1) + cell)
-        if cell == 1 and (i + 1 + cell) == target:
-            return "YES"
-    return "No"
-    
-    # for cell in transportaionMap[1]:
-    #     if cell == target:
-    #         return "Yes"
-    # return "No"
+        if ((i+1) + cell) <= n:
+            transportaionMap[cell].append((i + 1) + cell)
 
-print(pathExists(target, portals))
+    def dfs(graph, source, target):
+        if source == target:
+            return True
+        
+        for cell in graph[source]:
+            if dfs(graph, cell, target):
+                return True
+        return False
+    
+    hasPath = dfs(transportaionMap, 1, target)
+    return "YES" if hasPath else "NO"
+
+print(pathExists(n, target, portals))
+
