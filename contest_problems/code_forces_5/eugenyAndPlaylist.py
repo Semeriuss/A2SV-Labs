@@ -11,16 +11,11 @@ requiredDuration = list(map(int, input().split()))
 
 def findSong(timeAndDuration, requiredDuration):
     NUMBER_OF_SONGS = len(timeAndDuration)
-    eugenyDuration = [0] * requiredDuration[-1]
-    eugenyDuration[0] = timeAndDuration[0][0] * timeAndDuration[0][1]
-
-    for song in range(1, requiredDuration[-1]):
-        previousDuration = eugenyDuration[song - 1]
-        eugenyDuration[song] = (timeAndDuration[song % NUMBER_OF_SONGS][0] * timeAndDuration[song % NUMBER_OF_SONGS][1]) + previousDuration
+    eugenyDuration = timeAndDuration[0][0] * timeAndDuration[0][1]
 
     songIndex, durationIndex = 0, 0
     while durationIndex < len(requiredDuration):
-        if requiredDuration[durationIndex] <= eugenyDuration[songIndex]:
+        if requiredDuration[durationIndex] <= eugenyDuration:
             if songIndex > NUMBER_OF_SONGS:
                 print((songIndex + 1) % NUMBER_OF_SONGS)
             else:
@@ -29,6 +24,7 @@ def findSong(timeAndDuration, requiredDuration):
         
         else:
             songIndex += 1
+            eugenyDuration += timeAndDuration[songIndex][0] * timeAndDuration[songIndex][1]
         
         
 
