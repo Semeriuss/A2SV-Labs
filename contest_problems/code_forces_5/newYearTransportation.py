@@ -10,23 +10,15 @@ input = sys.stdin.readline
 portals = list(map(int, input().split()))
 
 def pathExists(n, target, portals):
-    transportaionMap = defaultdict(list)
-
-    for i, cell in enumerate(portals):
-        if ((i+1) + cell) <= n:
-            transportaionMap[i + 1].append((i + 1) + cell)
-
-    def dfs(graph, source, target):
-        if source == target:
-            return True
-
-        for cell in graph[source]:
-            if dfs(graph, cell, target):
-                return True
-        return False
     
-    hasPath = dfs(transportaionMap, 1, target)
-    return "YES" if hasPath else "NO"
+    start = 0
+    while start < n - 1:
+        start += portals[start]
+        if start + 1 == target:
+            return "YES"
+        if start + 1 > target:
+            return "NO"
+    return "NO"
 
 print(pathExists(n, target, portals))
 
