@@ -1,35 +1,41 @@
 import heapq
-from collections import deque
 class Solution:
-    def __init__(self, n):
-        self.parent = [i for i in range(n + 1)]
-        self.children = [1 for _ in range(n + 1)]
-
     def solve(self, edges, a, b):
-        return self.MST(edges, a, b)
+        print(self.MST(edges, a, b), self.MST(edges, a, b, True))
+        return self.MST(edges, a, b) == self.MST(edges, a, b, True)
 
-    def MST(self, edges, a, b):
+    def MST(self, edges, a, b, withEdgesAdded = False):
+        parent = [i for i in range(len(edges) + 1)]
+        children = [1 for _ in range(len(edges) + 1)]
 
         def getParent(node):
-            if self.parent[node] == node:
+            nonlocal parent, children
+            if parent[node] == node:
                 return node
-            self.parent[node] = getParent(self.parent[node])
-            return self.parent[node]
+            parent[node] = getParent(parent[node])
+            return parent[node]
         
         def merge(a, b):
+            nonlocal parent, children
             a_parent, b_parent = getParent(a), getParent(b)
             if a_parent != b_parent:
-                if self.children[a_parent] > self.children[b_parent]:
-                    self.children[a_parent] += self.children[b_parent]
-                    self.parent[b_parent] = a_parent
+                if children[a_parent] > children[b_parent]:
+                    children[a_parent] += children[b_parent]
+                    parent[b_parent] = a_parent
                 else:
-                    self.children[b_parent] += self.children[a_parent]
-                    self.parent[a_parent] = b_parent
+                    children[b_parent] += children[a_parent]
+                    parent[a_parent] = b_parent
             
         queue = []
+        mst_weight = 0
         for edge in edges:
             u, v, w = edge
-            heapq.heappush(queue, (w, u, v))
+            if withEdgesAdded and (min(u, v) == min(a, b) and max(u,v) == max(a,b)):
+                mst_weight += w
+                parent[a] = parent[b]
+                children[b] += 2
+            else:
+                heapq.heappush(queue, (w, u, v))
         
         mst_edge = []
         while queue:
@@ -38,16 +44,17 @@ class Solution:
             u_parent, v_parent = getParent(u), getParent(v)
             if u_parent != v_parent:
                 mst_edge.append((u, v, w))
-                merge(u, v)
+                mst_weight += w
+                merge(u_parent, v_parent)
             
-        return mst_edge
+        return mst_weight
             
 edges = [
     [0, 1, 100],
     [1, 2, 100],
-    [2, 0, 300]
+    [2, 0, 100]
 ]
 a = 0
 b = 2
 
-print(Solution(len(edges)).solve(edges, a, b))
+print(Solution().solve(edges, a, b))
