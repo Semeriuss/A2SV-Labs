@@ -9,37 +9,48 @@ for i in range(testcases):
     squares = input().rstrip()
     tests.append((n, squares))
 
-def findMinImperfectnessHelper(squares, n, nextChar):
+def findMinImperfectnessHelper(squares, n, nextChar, memo):
+
+    if n in memo:
+        return memo[n]
+
     if n >= len(squares):
-        return 
-    
+        memo[n] = nextChar if nextChar else 'B'
+        return memo[n]
+
     if n < 0:
-        findMinImperfectnessHelper(squares, n + 1, nextChar)
-    
+        memo[n] = nextChar
+        return memo[n]
+
     if squares[n] == '?' and not nextChar:
-        findMinImperfectnessHelper(squares, n + 1, nextChar)
+        memo[n] = findMinImperfectnessHelper(squares, n + 1, nextChar, memo)
+        squares[n] = memo[n]
 
     if squares[n] == '?' and nextChar:
-        squares[n] = nextChar
-        nextChar = 'B' if nextChar == 'B' else 'R'
-        findMinImperfectnessHelper(squares, n - 1, nextChar)
-        findMinImperfectnessHelper(squares, n + 1, nextChar)
+        memo[n] = nextChar
+        squares[n] = memo[n]
+        nextChar = 'B' if nextChar == 'R' else 'B'
+        findMinImperfectnessHelper(squares, n - 1, nextChar, memo)
+
     
     if squares[n] == 'B':
         nextChar = 'R'
-        findMinImperfectnessHelper(squares, n - 1, nextChar)
-        findMinImperfectnessHelper(squares, n + 1, nextChar)
+        findMinImperfectnessHelper(squares, n + 1, nextChar, memo)
+        return nextChar
     
     if squares[n] == 'R':
         nextChar = 'B'
-        findMinImperfectnessHelper(squares, n - 1, nextChar)
-        findMinImperfectnessHelper(squares, n + 1, nextChar)
+        findMinImperfectnessHelper(squares, n + 1, nextChar, memo)
+        return nextChar
 
 
 
 def findMinImperfectness(squares, n):
     tobeModified = list(squares)
-    findMinImperfectnessHelper(tobeModified, 0, None)
+    findMinImperfectnessHelper(tobeModified, 0, None, {})
+    
     return "".join(tobeModified)
 
-print(findMinImperfectness(squares, n))
+for test in tests:
+    n, squares = test
+    print(findMinImperfectness(squares, n))
