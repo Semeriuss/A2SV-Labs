@@ -1,27 +1,14 @@
 from collections import defaultdict, Counter
-import heapq 
 import string
 
+
 def word_count_engine(document):
-  docString = document.translate(string.maketrans("",""), string.punctuation)
+  docString = document.translate(str.maketrans('', '', string.punctuation))
   words = [word.lower() for word in docString.split()]
 
   wordMap = Counter(words)
-
-
-  wordCount = []
-  for word, order in wordMap.items():
-    wordCount.append((order, word))
   
-  heapq.heapify(wordCount)
+  return [[word, str(count)] for word, count in wordMap.most_common()]
   
-  result = []
-  while wordCount:
-    result.append(heapq.heappop(wordCount))
-  
-  return result
-  
- 
-  
-    
-  pass # your code goes here
+input_doc = "Practice makes perfect, you'll get perfecT by practice. just practice! just just just!!"
+print(word_count_engine(input_doc))
