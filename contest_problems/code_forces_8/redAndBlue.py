@@ -1,30 +1,19 @@
 def maxSubArraySum(red, blue):
 
-    currMax = 0
-    currVal = 0
-    
-    commonIndex = min(len(red), len(blue))
-    leftOver = max(len(red), len(blue))
+    prefixRed = [red[0]]
+    prefixBlue = [blue[0]]
 
-    lastIndex = 0
-    for i in range(commonIndex):
-        currVal += max(red[i], blue[i])
-        currMax = max(currVal, currMax)
-        currVal += min(red[i], blue[i])
-        lastIndex = i
-        
+    maxRed = max(0, prefixRed[-1])
+    for i in range(1, len(red)):
+        prefixRed.append(prefixRed[-1] + red[i])
+        maxRed = max(maxRed, prefixRed[-1])
     
-    if lastIndex + 1 < len(red):
-        for j in range(lastIndex + 1, leftOver):
-            currVal += red[j]
-            currMax = max(currVal, currMax)
-    
-    elif lastIndex + 1 < len(blue):
-        for j in range(lastIndex + 1, leftOver):
-            currVal += blue[j]
-            currMax = max(currVal, currMax)
-    
-    return currMax
+    maxBlue = max(0, prefixBlue[-1])
+    for j in range(1, len(blue)):
+        prefixBlue.append(prefixBlue[-1] + blue[j])
+        maxBlue = max(maxBlue, prefixBlue[-1]) 
+
+    return maxBlue + maxRed
 
 if __name__ == "__main__":
     t = int(input())
