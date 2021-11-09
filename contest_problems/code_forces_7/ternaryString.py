@@ -5,26 +5,26 @@ for i in range(t):
     tests.append([int(char) for char in input()])
 
 def ternaryString(nums):
-    nummap = {1: 0, 2: 0, 3: 0}
+    count = [0, 0, 0]
 
     ep = 0
     sp = 0
 
-    def allIn(nummap):
-        return nummap[1] != 0 and nummap[2] != 0 and nummap[3] != 0
+    def checkCount(count):
+        return min(count) != 0
     
     minLength = float("inf") 
-    nummap[nums[0]] += 1
+    count[nums[0] - 1] += 1
     while sp < len(nums) - 1 and ep < len(nums):
-        if allIn(nummap):
+        if checkCount(count):
             minLength = min(minLength, ep - sp + 1)
-            nummap[nums[sp]] -= 1
+            count[nums[sp] - 1] -= 1
             sp += 1
         
         else:
             ep += 1
             if ep < len(nums):
-                nummap[nums[ep]] += 1
+                count[nums[ep] - 1] += 1
     return minLength if minLength != float("inf") else 0
  
 
