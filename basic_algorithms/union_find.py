@@ -10,11 +10,13 @@ def find(node):
 
 def union(node1, node2):
     smallRoot, bigRoot = sorted([find(node1), find(node2)], key=lambda x: size[x])
-
     if smallRoot != bigRoot:
         root[smallRoot] = bigRoot
         size[bigRoot] += size[smallRoot]
-    
+
+def connected(node1, node2):
+    return find(node1) == find(node2)
+
 union(3, 4)
 print(find(3))
     
