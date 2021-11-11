@@ -21,6 +21,9 @@ def cormen(nums, k):
     totalNeededWalks = 0
     additionalWalks = nums.copy()
     needsMoreWalks = False
+    if len(nums) == 1 and nums[0] < k:
+        needsMoreWalks = True
+        
     for i in range(1, len(nums)):
         walks = nums[i - 1] + nums[i]
         if walks < k:
