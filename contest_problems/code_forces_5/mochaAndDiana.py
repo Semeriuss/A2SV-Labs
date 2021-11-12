@@ -8,11 +8,9 @@ def findMaxConnectableEdges(n, mochaEdges, dianaEdges):
         return forest[node]
 
     def union(node1, node2, forest, size):
-        smallRoot, bigRoot = sorted([find(node1, forest), find(node2, forest)], key=lambda x: size[x])
-
-        if smallRoot != bigRoot:
-            forest[smallRoot] = bigRoot
-            size[bigRoot] += size[smallRoot]
+        smallRoot, bigRoot = tuple(sorted([find(node1, forest), find(node2, forest)], key=lambda x: size[x]))
+        forest[smallRoot] = bigRoot
+        size[bigRoot] += size[smallRoot]
 
     def connected(node1, node2, forest):
         return find(node1, forest) == find(node2, forest)
@@ -25,7 +23,7 @@ def findMaxConnectableEdges(n, mochaEdges, dianaEdges):
         
     connectableEdges = []
     for node1 in range(1, n + 1):
-        for node2 in range(i + 1, n + 1):
+        for node2 in range(node1 + 1, n + 1):
             if not connected(node1, node2, mochaForest) and not connected(node1, node2, dianaForest):
                 connectableEdges.append(f'{node1} {node2}')
                 union(node1, node2, mochaForest, mochaSize)
@@ -37,7 +35,7 @@ def findMaxConnectableEdges(n, mochaEdges, dianaEdges):
         print(*connectableEdges, sep="\n")
 
 if __name__ == "__main__":
-    n, m1, m2 = list(map(int, input().split()))
+    n, m1, m2 = tuple(list(map(int, input().split())))
     mochaEdges = []
     for i in range(m1):
         mochaEdges.append(list(map(int, input().split())))
