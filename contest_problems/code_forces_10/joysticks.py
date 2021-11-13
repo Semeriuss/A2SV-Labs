@@ -3,6 +3,8 @@ def joysticks(a, b):
     if a <= 0 or b <= 0:
         return 0
     
+    elif a == b == 1:
+        return 0
     else:
         # return 1 + max(joysticks(a + 1, b - 2), joysticks(a - 2, b + 1))
         if a < b:
