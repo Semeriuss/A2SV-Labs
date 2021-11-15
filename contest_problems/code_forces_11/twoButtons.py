@@ -1,22 +1,17 @@
-def twoButtons(n, m, memo):
-    if m <= 0:
-        return 
-    
-    if n == m:
-        return 0
-    
-    else:
-        
+def twoButtons(n, m):
+   
+    steps = 0
+    while m > n:
         if m % 2 != 0:
-            memo[m] = twoButtons(n, m + 1, memo)
-            return 1 + memo[m]
+            m += 1
         else:
-            memo[m] = twoButtons(n, m//2, memo)
-            return 1 + memo[m]
-
+            m //= 2
+        steps += 1
+            
+    return steps + abs(n - m)
 if __name__ == "__main__":
     n, m = map(int, input().split())
     if m > n:
-        print(twoButtons(n, m, {}))
+        print(twoButtons(n, m))
     else:
         print(n - m)
