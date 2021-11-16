@@ -1,20 +1,18 @@
 def deleteSubstring(s, k):
-    start, end = 0, 0
-    count = 0
-        
-    while end < len(s) or len(s) < k:
-        if count == k:            
-            s.replace(s[start]*k, "") 
-     
-            start, end = 0, 0
-            
-        if s[start] == s[end]:
-            end += 1
-            count += 1
+    
+    stack = [[]]
+    for char in s:
+        if stack[-1] != [] and stack[-1][1] == k:
+            stack.pop()
+        if stack[-1] != [] and stack[-1][0] == char:
+            stack[-1][1] += 1
         else:
-            start = end
-            count = 0
-            end += 1
-            
-    return s
+            stack.append([char, 1])
+    
+    ans = []
+    for sub in stack:
+        if sub != []:
+            ans.append(sub[0])
+    
+    return "".join(ans)
 print(deleteSubstring("ddbbcccbdaa", 3))
