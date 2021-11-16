@@ -1,3 +1,5 @@
+import sys
+sys.setrecursionlimit(3000)
 def solveMaze(maze):
     ROWSIZE = len(maze)
     COLSIZE = len(maze[0])
@@ -18,41 +20,41 @@ def solveMaze(maze):
                 elif cCell == "G": 
                     return False
         return True
-
-    def hasPath(graph, src, dst, visited):
-        if src == dst: return True
+    c = 0
+    def countGoods(graph, src, visited, count):
+        nonlocal c
         sRow, sCol = src
         visited.add(src)
         for x, y in directions:
             nRow, nCol = sRow + x, sCol + y
-            if fitsBoundary(nRow, nCol) and \
-                graph[nRow][nCol] != "#" and \
-                graph[nRow][nCol] != "B" and \
-                (nRow, nCol) not in visited and \
-                hasPath(graph, (nRow, nCol), dst, visited): return True
-        return False 
+            if fitsBoundary(nRow, nCol) and graph[nRow][nCol] != "#" and (nRow, nCol) not in visited:
+                visited.add((nRow, nCol))
+                if graph[nRow][nCol] == "G":
+                    c += 1
+                    countGoods(graph, (nRow, nCol), visited, count)
+                else:
+                    countGoods(graph, (nRow, nCol), visited, count)
+        return c
 
     target = (ROWSIZE - 1, COLSIZE - 1)
-    goods = []
+    goodCount = 0
     for i in range(ROWSIZE):
         for j in range(COLSIZE):
             cCell = maze[i][j]
             if cCell == "B":
                 if not closePath(maze, (i, j)):
-                    return "No"
+                    return "NO"
             elif cCell == "G":
-                goods.append((i, j))
+                goodCount += 1
     
-
-    if maze[ROWSIZE - 1][COLSIZE - 1] != "#" and len(goods) == 0:
+    if maze[ROWSIZE - 1][COLSIZE - 1] != "#" and goodCount == 0:
         return "YES"
-
-    pathExists = True
-    for good in goods:
-        if not hasPath(maze, good, target, set()):
-            pathExists = False
-            break
-    return "YES" if pathExists else "NO"    
+    elif maze[ROWSIZE - 1][COLSIZE - 1] == "#" and goodCount > 0:
+        return "NO"
+    
+    
+    count = countGoods(maze, target, set(), c)
+    return "YES" if count == goodCount else "NO"    
 
 if __name__ == "__main__":
     t = int(input())
