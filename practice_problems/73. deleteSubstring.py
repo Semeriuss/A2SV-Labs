@@ -11,8 +11,9 @@ def deleteSubstring(s, k):
     
     ans = []
     for sub in stack:
-        if sub != []:
-            ans.append(sub[0])
+        if sub != [] and sub[1] != k:
+            ans.append(sub[0] * sub[1])
+        
     
     return "".join(ans)
-print(deleteSubstring("ddbbcccbdaa", 3))
+print(deleteSubstring("ddbbcccbdaaa", 3))
