@@ -3,60 +3,64 @@ from collections import deque
 def makePalindrome(a, b, s):
 
     sp, ep = 0, len(s) - 1
-    
-    palindrome = deque()
+    for char in s:
+        if char == "0":
+            a -= 1
+        elif char == "1":
+            b -= 1
+
     leftEnd = []
-    rightEnd = []
+    rightEnd = deque()
     while sp < ep:
-        print(palindrome)
+        # print(leftEnd, rightEnd, a, b)
         if s[sp] == s[ep] == "?":
             if a > 1:
                 a -= 2
-                palindrome.append("0")
-                palindrome.appendleft("0")
+                rightEnd.appendleft("0")
+                leftEnd.append("0")
             
             elif b > 1:
                 b -= 2
-                palindrome.append("1")
-                palindrome.appendleft("1")
+                rightEnd.appendleft("1")
+                leftEnd.append("1")
             
             else:
                 return -1 
 
         elif s[sp] == "?" and s[ep] != "?":
             if s[ep] == "1":
-                if b > 1:
-                    b -= 2
-                    palindrome.append("1")
-                    palindrome.appendleft("1")
+                if b >= 1:
+                    b -= 1
+                    rightEnd.appendleft("1")
+                    leftEnd.append("1")
                 
                 else:
                     return -1
             
             elif s[ep] == "0":
-                if a > 1:
-                    a -= 2
-                    palindrome.append("0")
-                    palindrome.appendleft("0")
+                if a >= 1:
+                    a -= 1
+                    rightEnd.appendleft("0")
+                    leftEnd.append("0")
                 
                 else:
                     return -1
         
         elif s[ep] == "?" and s[sp] != "?":
             if s[sp] == "1":
-                if b > 1:
-                    b -= 2
-                    palindrome.append("1")
-                    palindrome.appendleft("1")
+                if b >= 1:
+                    b -= 1
+                    rightEnd.appendleft("1")
+                    leftEnd.append("1")
                 
                 else:
                     return -1
             
             elif s[sp] == "0":
-                if a > 1:
-                    a -= 2
-                    palindrome.append("0")
-                    palindrome.appendleft("0")
+                if a >= 1:
+                    a -= 1
+                    rightEnd.appendleft("0")
+                    leftEnd.append("0")
                 
                 else:
                     return -1
@@ -64,11 +68,10 @@ def makePalindrome(a, b, s):
         else:
             if s[sp] == s[ep]:
                 leftEnd.append(s[sp])
-                rightEnd.append(s[ep])
+                rightEnd.appendleft(s[ep])
             else:
                 return -1
-                
-        print(palindrome)
+        # print(leftEnd, rightEnd, a, b)
         sp += 1
         ep -= 1
     
@@ -76,21 +79,35 @@ def makePalindrome(a, b, s):
         if sp == ep and s[ep] == "?":
             if a == 1:
                 a -= 1
-                palindrome.append("0")
+                leftEnd.append("0")
             
             elif b == 1:
                 b -= 1
-                palindrome.append("1")            
+                leftEnd.append("1")            
             else:
                 return -1
+        
+        else:
+            # print(s[sp], s[ep], sp, ep)
+            # print(len(leftEnd) + len(rightEnd), len(list(s)), "lennn")
+            if len(leftEnd) + len(rightEnd) < len(list(s)):
+                if s[sp] != "?":
+                    leftEnd.append(s[sp])
+                
+                else:
+                    if a > 0:
+                        leftEnd.append("0")
+                        a -= 1
+                    elif b > 0:
+                        leftEnd.append("1")
+                        b -= 1
+                    else:
+                        return -1
+                    
 
-    # leftEnd.extend(palindrome)
-    # leftEnd.extend(rightEnd)
-    # print(leftEnd)
-    print(leftEnd, rightEnd)
-    palindrome.extendleft(leftEnd)
-    palindrome.extend(rightEnd)
-    return "".join(palindrome)
+    # print(leftEnd, rightEnd, a, b)
+    leftEnd.extend(rightEnd)
+    return "".join(leftEnd) if a == b == 0 else -1
 
 if __name__ == "__main__":
     t = int(input())
