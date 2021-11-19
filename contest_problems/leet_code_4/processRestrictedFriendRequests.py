@@ -3,59 +3,47 @@ from collections import defaultdict
 
 class Solution:
     def friendRequests(self, n: int, restrictions: List[List[int]], requests: List[List[int]]) -> List[bool]:
-        
 
-        root = list(range(n + 1))
-        size = [1] * (n + 1)
-        
-        def notRestricted(edge1, edge2, enemies, friends):
-            if edge1 in enemies and edge2 in enemies[edge1]:
-                return False
-            if edge2 in enemies and edge1 in enemies[edge2]:
-                return False
-            
-            if edge1 in friends:
-                for friend in friends[edge1]:
-                    if edge2 in enemies[friend]:
-                        return False
-            
-            if edge2 in friends:
-                for friend in friends[edge2]:
-                    if edge1 in enemies[friend]:
-                        return False
-            
+        def hasPath(graph, src, dst, visited):
+            if src == dst: return True
+            visited.add(src)
+            for neighbor in graph[src]:
+                if neighbor not in visited and hasPath(graph, neighbor, dst, visited): return True
+                visited.add(neighbor)
+            return False
+
+        def notRestricted(friends):
+            for restriction in restrictions:
+                node1, node2 = restriction
+                if hasPath(friends, node1, node2, set()):
+                    return False
             return True
-            
 
         res = []
-        enemies = defaultdict(list)
         friends = defaultdict(list)
-        for restriction in restrictions:
-            edge1, edge2 = restriction
-            enemies[edge1].append(edge2)
-            enemies[edge2].append(edge1)
-        
-        
-        for i, request in enumerate(requests):
-            edge1, edge2 = request
-            if not notRestricted(edge1, edge2, enemies, friends):
-                res.append(False)
-            else:
+        for request in requests:
+            node1, node2 = request
+            friends[node1].append(node2)
+            friends[node2].append(node1)
+            if notRestricted(friends):
                 res.append(True)
-                friends[edge1].append(edge2)
-                friends[edge2].append(edge1)
-                for enemy in enemies[edge2]:
-                    if enemy not in enemies[edge1]:
-                        enemies[edge1].append(enemy)
-                for enemy in enemies[edge1]:
-                    if enemy not in enemies[edge2]:
-                        enemies[edge2].append(enemy)
-        print(enemies, friends, sep="\n")
+            else:
+                res.append(False)
+                friends[node1].remove(node2)
+                friends[node2].remove(node1)
         return res
                         
 
 n = 5
 restrictions = [[0,1],[1,2],[2,3]]
 requests = [[0,4],[1,2],[3,1],[3,4]]
+
+n = 3
+restrictions = [[0,1]]
+requests = [[1,2],[0,2]]
+
+n = 3
+restrictions = [[0,1]]
+requests = [[0,2],[2,1]]
 
 print(Solution().friendRequests(n, restrictions, requests))
