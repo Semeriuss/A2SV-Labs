@@ -4,15 +4,12 @@ class Solution:
         sp, ep = 0, 0
         count = 0
         while ep < len(s):
-            print(sp, ep, count, s[sp], s[ep], s)
-            print(visited)
             if s[ep] in visited and sp <= visited[s[ep]]:
-                sp = visited[s[ep]]
+                sp = visited[s[ep]] + 1
             else:
-                count = max(count, ep - sp)
+                count = max(count, ep - sp + 1)
             visited[s[ep]] = ep
             ep += 1
-        count = max(count, ep - sp)
         return count
     
 print(Solution().lengthOfLongestSubstring("hdcuwehfv hfcdnsjcnkj dhd kh jhfdjcjdhcjdhceuwhcadcknlndcen"))
