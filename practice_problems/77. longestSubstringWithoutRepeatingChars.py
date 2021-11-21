@@ -11,5 +11,22 @@ class Solution:
             visited[s[ep]] = ep
             ep += 1
         return count
-    
-print(Solution().lengthOfLongestSubstring("hdcuwehfv hfcdnsjcnkj dhd kh jhfdjcjdhcjdhceuwhcadcknlndcen"))
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        visited = {}
+        count, start = 0, 0
+        for end, letter in enumerate(s):
+            if letter in visited and visited[letter] >= start:
+                start = visited[letter] + 1
+            else:
+                count = max(count, end - start + 1)
+            visited[letter] = end
+        return count
+  
+# print(Solution().lengthOfLongestSubstring("hdcuwehfv hfcdnsjcnkj dhd kh jhfdjcjdhcjdhceuwhcadcknlndcen"))
+# print(Solution().lengthOfLongestSubstring("abcabcbb"))
+# print(Solution().lengthOfLongestSubstring("pwwkew"))
+# print(Solution().lengthOfLongestSubstring(""))
+print(Solution().lengthOfLongestSubstring("aab"))
+
