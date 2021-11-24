@@ -5,16 +5,17 @@ class Solution:
         for b in s:
             if b in opener:
                 stack.append(b)
-            else:
-                if not stack:
-                    return False
-                if opener[stack.pop()] != b:
-                    return False
-        return True
+            elif not stack:
+                return False
+            elif opener[stack.pop()] != b:
+                return False
+        return True if len(stack) == 0 else False
 
 s = "()"
 s = "()[]{}"
 s = "(]"
 s = "([)]"
 s = "{[]}"
+s = "["
+s = "]"
 print(Solution().isValid(s))
