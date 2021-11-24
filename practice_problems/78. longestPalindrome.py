@@ -1,24 +1,20 @@
 class Solution:
     
     def longestPalindrome(self, s: str) -> str:
-        if len(s) < 2:
-            return s
-            
-        self.startPointer, self.endPointer = 0, 0
-        def findPalindrome(s, sp, ep):
-            while sp >= 0 and ep < len(s) and s[sp] == s[ep]:
-                    ep += 1
-                    sp -= 1   
-
-            if self.endPointer < ep - sp - 1:
-                self.startPointer = sp + 1
-                self.endPointer = ep - sp - 1
-
-        for i in range(len(s) - 1):
-            findPalindrome(s, i, i)
-            findPalindrome(s, i, i + 1)
-            
-        return s[self.startPointer: self.startPointer + self.endPointer]
+        dp = [None for _ in range(len(s))]
+        ans = ""
+        for j in range(len(s)):
+            for i in range(j+1):
+                if i == j:
+                   dp[i] = True
+                elif j == i + 1:
+                    dp[i] = s[i] == s[j]
+                else:
+                    dp[i] = dp[i + 1] and s[i] == s[j]
+                
+                if dp[i] and j - i + 1 > len(ans):
+                    ans = s[i : j + 1]
+        return ans
 
 
 
