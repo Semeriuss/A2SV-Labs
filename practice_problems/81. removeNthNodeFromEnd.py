@@ -9,20 +9,16 @@ class ListNode:
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
         
-        if not head:
-            return None
+        def remove(head, n):
+            if not head: return head, 0
+            node, count = remove(head.next, n)
+            head.next = node
+            count += 1
+            if count == n: head = head.next
 
-        slow = fast = head
-        
-        for _ in range(n): fast = fast.next
-        if not fast: return head.next
-        while fast.next:
-            slow, fast = slow.next, fast.next
-        slow.next = slow.next.next
-
-        while head:
-            print(head.val, end = " ")
-            head = head.next
+            return head, count
+        print()
+        return remove(head, n)[0]
 
     
 head = ListNode(1, ListNode(2, ListNode(3, ListNode(4, ListNode(5, ListNode(6, ListNode(7, ListNode(8, ListNode(9)))))))))
@@ -34,6 +30,9 @@ n = 3
 # head = ListNode(1, ListNode(2))
 # n = 1
 
-print(Solution().removeNthFromEnd(head, n))
+# print(Solution().removeNthFromEnd(head, n))
         
-        
+ans = Solution().removeNthFromEnd(head, n)
+while ans:
+    print(ans.val, end = " ")
+    ans = ans.next
