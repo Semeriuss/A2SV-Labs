@@ -1,5 +1,5 @@
 from typing import List, Optional
-
+import  heapq
 # Definition for singly-linked list.
 class ListNode:
     def __init__(self, val=0, next=None):
@@ -8,20 +8,21 @@ class ListNode:
 
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        def mergeTwoLists(a, b):
-            if not a or (b and a.val > b.val):
-                a, b = b, a
-            if a:
-                a.next = mergeTwoLists(a.next, b)
-            return a
+        current = head = ListNode()
+        queue = []
+        count = 0
+        for ptr in lists:
+            heapq.heappush(queue, (ptr.val, count, ptr))
+            count += 1
+        while queue:
+            _, _, curr = heapq.heappop(queue)
+            current.next = curr
+            current = current.next
+            curr = curr.next
+            count += 1
+            if curr:
+                heapq.heappush(queue, (curr.val, count, curr))
         
-        while len(lists) > 1:
-            res = []
-            for i in range(0, len(lists) - 1, 2):
-                res.append(mergeTwoLists(lists[i], lists[i + 1]))
-            
-            if len(lists) % 2 == 1:
-                res.append(lists[-1])
-            lists = res
-        
-        return lists[0] if len(lists) else None
+        return head.next
+
+
