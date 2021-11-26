@@ -3,64 +3,30 @@ from typing import List
 
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
+        minIndex = self.findMinIndex(nums)
+        start = minIndex if target <= nums[len(nums) - 1] else 0
+        end = minIndex if target > nums[len(nums) - 1] else len(nums) - 1
+        print(minIndex, start, end)
+        while start <= end:
+            mid = start + (end - start)//2
+            if nums[mid] > target:
+                end = mid - 1
+            elif nums[mid] < target:
+                start = mid + 1
+            else:
+                return mid
+        return -1
+        
+    def findMinIndex(self, nums: List[int]) -> int:
         left = 0
         right = len(nums) - 1
-        
-        mid = -1
-        while left <= right:
-            mid = (left + (right - left)//2)
-            print("mid", mid, "left", left, "right", right)
-            if nums[mid] > nums[0]:
-                if target == nums[left]:
-                    mid = left
-                    break
-                elif target == nums[right]:
-                    mid = right
-                    break
-                elif target == nums[len(nums) - 1]:
-                    mid = len(nums) - 1
-                    break
-                elif target < nums[mid] and target < nums[0]:
-                    left = mid + 1
-                elif target < nums[mid] and target > nums[0]:
-                    right = mid - 1
-                elif target > nums[mid] and target > nums[0]:
-                    left = mid + 1
-                elif target > nums[mid] and target < nums[0]:
-                    mid = -1
-                    break
-                else:
-                    break
-            
-            elif nums[mid] < nums[0]:
-                if target == nums[left]:
-                    mid = left
-                    break
-                elif target == nums[right]:
-                    mid = right
-                    break
-                elif target < nums[mid] and target < nums[0]:
-                    right = mid - 1
-                elif target < nums[mid] and target > nums[0]:
-                    mid = -1
-                    break
-                elif target > nums[mid] and target > nums[0]:
-                    right = mid - 1
-                elif target > nums[mid] and target < nums[0]:
-                    left = mid + 1
-                else:
-                    break
-            
+        while left < right:
+            mid = left + (right - left)//2
+            if nums[mid] > nums[right]:
+                left = mid + 1
             else:
-                if target == nums[left]:
-                    mid = left
-                    break
-                elif target == nums[right]:
-                    mid = right
-                    break
-                break
-        
-        return mid if nums[mid] == target else -1
+                right = mid
+        return left
 
 nums = [4,5,6,7,0,1,2]
 target = 0
@@ -82,4 +48,10 @@ target = 2
 
 nums = [19,21,24,25,26,27,67,88,111,1111,3242,10000,-10000,-3434,-454,-45,-5,-2,0,1,2,4,5,6,7,8,9]
 target = 21
+
+nums = [1,3]
+target = 3
+
+nums = [8,9,2,3,4]
+target = 9
 print(Solution().search(nums, target))        
