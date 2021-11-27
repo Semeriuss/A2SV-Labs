@@ -3,23 +3,14 @@ from collections import Counter, defaultdict
 
 
 class Solution:
-    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        root = list(range(len(strs)))
-        group = []
-        visited = set()
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:  
+        frequency = defaultdict(list)
         for i in range(len(strs)):
-            if i not in visited:
-                visited.add(i)
-                checker = Counter(strs[i])
-                temp = [strs[i]]
-                for j in range(i, len(strs)):
-                    if j not in visited:
-                        if checker == Counter(strs[j]):
-                            temp.append(strs[j])
-                            visited.add(j)
-                group.append(temp)
-    
-        return group
+            count = [0]*26
+            for j in strs[i]:
+                count[ord(j) - ord('a')] += 1
+            frequency[tuple(count)].append(strs[i])
+        return list(frequency.values())
 
 
 strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
