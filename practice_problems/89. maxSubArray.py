@@ -1,12 +1,7 @@
 def maxSubArraySum(nums):
-    maxsum = nums[0]
-    currsum = 0
-    for num in nums:
-        if currsum < 0:
-            currsum = 0
-        currsum += num
-        maxsum = max(maxsum, currsum)
-    return maxsum
+    for i in range(1, len(nums)):
+        nums[i] = max(nums[i], nums[i - 1])
+    return max(nums)
 
 nums = [-2,-3,4,5,1,-44,132,23]
 # nums = [-2,1,-3,4,-1,2,1,-5,4]
