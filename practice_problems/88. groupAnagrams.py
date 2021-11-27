@@ -10,7 +10,7 @@ class Solution:
             for j in strs[i]:
                 count[ord(j) - ord('a')] += 1
             frequency[tuple(count)].append(strs[i])
-        return list(frequency.values())
+        return frequency.values()
 
 
 strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
