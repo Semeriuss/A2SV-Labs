@@ -1,17 +1,26 @@
-from collections import defaultdict, Counter, OrderedDict
-import collections
+from collections import OrderedDict
 import string
-
-
 def word_count_engine(document):
-
     docString = document.translate(str.maketrans('', '', string.punctuation))
     words = [word.lower() for word in docString.split()]
+    count = OrderedDict()
+    largestCount = 0
+    for word in  words:
+        if word in count:
+            count[word] += 1
+        else:
+            count[word] = 1
+        largestCount = max(largestCount, count[word])
 
-    result = sorted([list(t) for t in Counter(words).items()], key=lambda x: (-x[1], words.index(x[0])))
-  
-    for i in range(len(result)):
-        result[i][1] = str(result[i][1])
+    counterList = [[] for _ in range(largestCount + 1)]
+    for word, occurrence in count.items():
+        counterList[occurrence].append([word, str(occurrence)])
+    
+    result = []
+    for i in range(largestCount, -1, -1):
+        for pair in counterList[i]:
+            if pair:
+                result.append(pair)
     return result
 
     
