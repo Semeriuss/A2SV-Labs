@@ -3,65 +3,35 @@ from typing import List
 
 class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
-        ROW = len(matrix)
-        COL = len(matrix[0])
+        left, right = 0, len(matrix[0])
+        top, bottom = 0, len(matrix)
 
-        path = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-        def dfs(mat, src, visited, res):
-            a, b = src
-            if src in visited or a >= ROW or b >= COL or a < 0 or b < 0:
-                return 
-            visited.add(src)
-            for x, y in path:
-                next_a, next_b = a + x, b + y
-                if mat[a][b] not in visited:
-                    visited.add(mat[a][b])
-                    res.append(mat[a][b])
-                if (next_a, next_b) not in visited:
-                    dfs(mat, (next_a, next_b), visited, res)
-        ans = []
-        dfs(matrix, (0, 0), set(), ans)
-        return ans
-
+        output, visited = [], set()
+        while left < right and top < bottom:
+            for i in range(left, right):
+                if (top, i) not in visited:
+                    output.append(matrix[top][i])
+                    visited.add((top, i))
+            top += 1
+            for j in range(top, bottom):
+                if (j, right - 1) not in visited:
+                    output.append(matrix[j][right - 1])
+                    visited.add((j, right - 1))
+            right -= 1
+            for k in range(right - 1, left - 1, - 1):
+                if (bottom - 1, k) not in visited:
+                    output.append(matrix[bottom - 1][k])
+                    visited.add((bottom - 1, k))
+            bottom -= 1
+            for l in range(bottom - 1, top - 1, - 1):
+                if (l, left) not in visited:
+                    output.append(matrix[l][left])
+                    visited.add((l, left))
+            left += 1
+        return output
 
 matrix = [[1,2,3], [4,5,6], [7,8,9]]
 matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]
+matrix = [[23,18,20,26,25],[24,22,3,4,4],[15,22,2,24,29],[18,15,23,28,28]]
 print(Solution().spiralOrder(matrix))
-
-
-
-
-
-
-# def dfs(mat, i, j, visited):
-    # if (i >= ROW and j >= COL) or (i < 0 ):
-    #     return 
-    
-    # if j < COL:
-    #     if (i, j) not in visited:
-    #         visited.add((i, j))
-    #         print(mat[i, j])
-    #     dfs(mat, i, j + 1)
-
-    # if i < ROW:
-    #     if (i, j) not in visited:
-    #         visited.add((i, j))
-    #         print(mat[i, j])
-    #     dfs(mat, i + 1, j)
-    
-    # if j == COL - 1:
-    #     if (i, j) not in visited:
-    #         visited.add((i, j))
-    #         print(mat[i, j])
-    #     dfs(mat, i, j - 1)
-
-    # if i == COL - 1:
-    #     if (i, j) not in visited:
-    #         visited.add((i, j))
-    #         print(mat[i, j])
-    #     dfs(mat, i - 1, j)
-    
-
-
-
-
