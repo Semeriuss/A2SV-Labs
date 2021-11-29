@@ -3,15 +3,13 @@ from typing import List
 
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-        intervals = sorted(intervals, key=lambda item : (item[1], item[0]))
-        ptr = len(intervals) - 1
-        while ptr >= 1:
-            # print(intervals[ptr][1], intervals[ptr - 1][0], "and", intervals[ptr][0], intervals[ptr - 1][1], intervals[ptr][1] >= intervals[ptr - 1][0] and intervals[ptr][0] <= intervals[ptr - 1][1])
-            if intervals[ptr][1] >= intervals[ptr - 1][0] and intervals[ptr][0] <= intervals[ptr - 1][1]:
-                intervals[ptr - 1] = [min(intervals[ptr][0], intervals[ptr - 1][0]), intervals[ptr][1]]
-                intervals.remove(intervals[ptr])
-            ptr -= 1
-        return intervals
+        output = []
+        for interval in sorted(intervals, key=lambda interval : interval[0]):
+            if output and interval[0] <= output[-1][1]:
+                output[-1][1] = max(interval[1], output[-1][1])
+            else:
+                output.append(interval)
+        return output
 
 intervals = [[1,3],[2,6],[8,10],[15,18]]
 intervals =  [[1,4],[4,5]]
