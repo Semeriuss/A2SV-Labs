@@ -1,34 +1,29 @@
-from collections import deque
+from collections import defaultdict, deque
 
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
-        path = [(1, 0), (0, 1)]
+        rPath = [(-1, 0), (0, -1)]
 
         def fitsBoundary(point):
             row, col = point
             return 0 <= row < m and 0 <= col < n
 
-        def bfs(src, dst):
-            queue = deque()
-            visited = set()
-            queue.append(src)
-            ways = 0
-            way = []
-            while queue:
-                curr_x, curr_y = queue.popleft()
-                if (curr_x, curr_y) == dst:
-                    ways += 1
-                    break
-                for x, y in path:
-                    next_x, next_y = x + curr_x, y + curr_y
-                    if (next_x, next_y) not in visited and fitsBoundary((next_x, next_y)):
-                        if (next_x, next_y) == dst:
-                            ways += 1
-                        visited.add((next_x, next_y))
-                        queue.append((next_x, next_y))
-            return ways
-        return bfs((0,0), (m-1, n-1))
-
-print(Solution().uniquePaths(3, 7))
+        def countPath(dst, memo):
+            if dst in memo:
+                return memo[dst]
+            if dst == (0, 0):
+                return 1
+            count = 0
+            if fitsBoundary(dst):
+                x, y = dst
+                for path in rPath:
+                    path_x, path_y = path
+                    next_x, next_y = x + path_x, y + path_y
+                    if fitsBoundary((next_x, next_y)):
+                        count += countPath((next_x, next_y), memo)
+                    memo[(x, y)] = count
+            return count
+        return countPath((m - 1, n - 1), defaultdict(int))
+print(Solution().uniquePaths(100, 100))
 
                     
