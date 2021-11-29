@@ -3,29 +3,30 @@ from typing import List
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
         self.res = False
-        def dfs(index):
+        def dfs(nums):
+            visited = set()
             res = False
-            def dfs_helper(index, visited):
-                nonlocal res 
-                if index >= len(nums) - 1:
+            def helper(nums, visited, index):
+                nonlocal res
+                # base case
+                if index >= len(nums)-1:
                     res = True
                     return True
 
                 if len(visited) == len(nums):
-                    return 
-
+                    return
                 visited.add(index)
-                for jump in range(1, nums[index] + 1):
+                for jump in range(1, nums[index]+1):
                     maxJump = index + jump
-                    if maxJump >= len(nums) - 1:
+                    if maxJump >= len(nums)-1:
                         res = True
-                        return 
-                    if maxJump not in visited and dfs(maxJump):
+                        return
+                    if maxJump not in visited and helper(nums, visited, maxJump):
                         return True
                 return False
-            res = dfs_helper(index, set())
+            helper(nums, visited, 0)
             return res
-        
+
         def bfs(index):
             queue = deque([index])
             visited = set([index])
@@ -43,7 +44,7 @@ class Solution:
                         visited.add(jump)
             return False
         # self.res = bfs(0)
-        self.res = dfs(0)
+        self.res = dfs(nums)
         return self.res
 
 nums = [2, 3, 1, 1, 4]
