@@ -4,23 +4,17 @@ from collections import deque
 
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
-        output = deque()
-        inserted = False
+        s, e = newInterval[0], newInterval[1]
+        left, right = [], []
         for interval in intervals:
-            if not inserted and newInterval[0] <= interval[1] and newInterval[1] >= interval[0]:
-                output.append([min(interval[0], newInterval[0]), max(interval[1], newInterval[1])])
-                inserted = True
-            elif inserted and interval[0] <= output[-1][1]:
-                output[-1][1] = max(interval[1], output[-1][1])
-            elif not inserted and newInterval[0] < interval[0] and newInterval[1] < interval[1]:
-                inserted = True
-                output.append(newInterval)
-                output.append(interval)
+            if interval[0] < e:
+                left.append(interval)
+            elif interval[1] > s:
+                right.append(interval)
             else:
-                output.append(interval)
-        
-        if not inserted: output.append(newInterval)
-        return list(output)
+                s = min(s, interval[0])
+                e = max(e, interval[1])
+        return left + [[s, e]] + right
 
 
 intervals = [[1,3],[6,9]]
