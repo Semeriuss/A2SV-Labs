@@ -6,12 +6,10 @@ class Solution:
         N = len(nums)
         if N == 1: return nums[0]
         @lru_cache(None)
-        def dfs(index, houses, BOUND):
+        def dfs(index, BOUND):
             if index >= BOUND: return 0
-            return max(nums[index] + dfs(index + 2, houses, BOUND), dfs(index + 1, houses, BOUND))
-            
-        houses = tuple(nums)
-        return max(dfs(1, houses, N), dfs(0, houses[:-1], N - 1))
+            return max(nums[index] + dfs(index + 2, BOUND), dfs(index + 1, BOUND))
+        return max(dfs(1, N), dfs(0,  N - 1))
 
 nums = [9, 1, 4, 9, 1, 0]
 nums = [1, 2, 3, 4, 5]
