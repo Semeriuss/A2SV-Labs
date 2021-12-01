@@ -3,13 +3,11 @@ from functools import lru_cache
 
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        N = len(nums)
-        if N == 1: return nums[0]
-        @lru_cache(None)
-        def dfs(index, BOUND):
-            if index >= BOUND: return 0
-            return max(nums[index] + dfs(index + 2, BOUND), dfs(index + 1, BOUND))
-        return max(dfs(1, N), dfs(0,  N - 1))
+        def simple_rob(nums):
+            prev, nex = 0, 0
+            for money in nums: prev, nex = nex, max(prev + money, nex)
+            return nex
+        return max(nums[0], simple_rob(nums[:-1]), simple_rob(nums[1:]))
 
 nums = [9, 1, 4, 9, 1, 0]
 nums = [1, 2, 3, 4, 5]
