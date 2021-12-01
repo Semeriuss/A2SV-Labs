@@ -5,37 +5,24 @@ class Solution:
         
         colorToBeFilled = image[sr][sc]
         image[sr][sc] = newColor
-        
-        index = (sr, sc)
-        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-        
+        path = [(0, 1), (0, -1), (1, 0), (-1, 0)]        
         
         def fitsBoundary(row, col):
             return 0 <= row < len(image) and 0 <= col < len(image[0])
         
-        def bfs(index: 'Tuple', image: List[List[int]]):
-            
-            visited = set()
-            queue = deque([index])
-            visited.add(index)
-            
-            while queue:
-                current_row, current_col = queue.popleft()
-                for direction in directions:
-                    next_row, next_col = 0, 0
-                    
-                    next_row = current_row + direction[0]
-                    next_col = current_col + direction[1]
-                    
-                    next_state = next_row, next_col
-                    
-                    if fitsBoundary(next_row, next_col) and next_state not in visited:
-                        if image[next_row][next_col] == colorToBeFilled:
-                            image[next_row][next_col] = newColor
-                            queue.append(next_state)
-                            visited.add(next_state)
+        def dfs(sr, sc):
+            if not fitsBoundary(sr, sr): return 
+            for x, y in path:
+                next_x, next_y = sr + x, sc + y 
+                if fitsBoundary(next_x, next_y) and image[next_x][next_y] == colorToBeFilled:
+                    image[next_x][next_y] = newColor
+                    dfs(next_x, next_y)
         
-        bfs(index, image)
+        dfs(sr, sc)
         return image
             
-            
+image = [[1,1,1],[1,1,0],[1,0,1]]
+sr = 1
+sc = 1
+newColor = 2  
+print(Solution().floodFill(image, sr, sc, newColor))
