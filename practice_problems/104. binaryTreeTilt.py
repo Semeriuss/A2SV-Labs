@@ -9,19 +9,12 @@ class TreeNode:
         self.right = right
 class Solution:
     def findTilt(self, root: Optional[TreeNode]) -> int:
-        res = 0
         def valueSum(node):
-            nonlocal res
-            if not node:
-                return 0
-            if not node.left and not node.right:
-                return node.val
-            
+            if not node: return (0, 0)
             left = valueSum(node.left)
             right = valueSum(node.right)
-            res += abs(left - right)
-            return left + right 
-        return valueSum(root)
+            return (left[0] + right[0] + node.val, abs(left[0] - right[0]) + left[1] + right[1])
+        return valueSum(root)[1]
 
 root = TreeNode(1, TreeNode(2), TreeNode(3))
 root = TreeNode(4, TreeNode(2, TreeNode(3), TreeNode(5)), TreeNode(9, None, TreeNode(7)))
