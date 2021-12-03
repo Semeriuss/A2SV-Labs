@@ -14,31 +14,44 @@ class Solution:
         self.bfs(root, root.left, root.right, result)
         return result
 
-    def bfs(parent: TreeNode, leftChild: TreeNode, rightChild: TreeNode, result: List[int]):
+    def bfs(self, parent: TreeNode, leftChild: TreeNode, rightChild: TreeNode, result: List[int]):
         result.append([parent.val])
+        result.append([])
 
         queue = deque()
-
+        
         if rightChild:
             queue.append(rightChild)
+            result[-1].append(rightChild.val)
+
         if leftChild:
             queue.append(leftChild)
+            result[-1].append(leftChild.val)
+
+        turn = False
+        if result[-1]:
+            result.append([])
 
         while queue:
             curr_node = queue.popleft()
-            result.append([curr_node.val])
-            if queue:
-                next_node = queue.popleft()
-                if next_node.left:
-                    queue.append(next_node.left)
-                if next_node.right:
-                    queue.append(next_node.right)
-                result.append(next_node.val)
+            result[-1].append(curr_node.val)
+            innerQueue = queue.copy()
+            queue.clear()
+
             if curr_node.left:
-                queue.append(curr_node.left)
+                queue.appendleft(curr_node.left)
             if curr_node.right:
-                queue.append(curr_node.right)
-        
+                queue.appendleft(curr_node.right)
             
+            while innerQueue:
+                next_node = innerQueue.pop()
+                result[-1].append(next_node.val)
+                if next_node.right:
+                    queue.appendleft(next_node.right)
+                if next_node.left:
+                    queue.appendleft(next_node.left) 
+    
+            result.append([])
+        result.pop()
             
 
