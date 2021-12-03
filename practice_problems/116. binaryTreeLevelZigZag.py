@@ -1,6 +1,5 @@
-# Definition for a binary tree node.
-from typing import List, Optional
 from collections import deque
+from typing import List, Optional
 
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -11,47 +10,28 @@ class Solution:
     def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         result = []
         if not root: return result
-        self.bfs(root, root.left, root.right, result)
-        return result
-
-    def bfs(self, parent: TreeNode, leftChild: TreeNode, rightChild: TreeNode, result: List[int]):
-        result.append([parent.val])
-        result.append([])
-
-        queue = deque()
         
-        if rightChild:
-            queue.append(rightChild)
-            result[-1].append(rightChild.val)
-
-        if leftChild:
-            queue.append(leftChild)
-            result[-1].append(leftChild.val)
-
-        turn = False
-        if result[-1]:
-            result.append([])
-
-        while queue:
-            curr_node = queue.popleft()
-            result[-1].append(curr_node.val)
-            innerQueue = queue.copy()
-            queue.clear()
-
-            if curr_node.left:
-                queue.appendleft(curr_node.left)
-            if curr_node.right:
-                queue.appendleft(curr_node.right)
+        que = deque([root])
+        k = 0
+        while que:
+            if k % 2:
+                temp = [node.val for node in reversed(que)]
+            else:
+                temp = [node.val for node in que]
+            result.append(temp)
+            for _ in range(len(que)):
+                curr_node = que.popleft()
+                if curr_node.left:
+                    que.append(curr_node.left)
+                if curr_node.right:
+                    que.append(curr_node.right)
+            k += 1
             
-            while innerQueue:
-                next_node = innerQueue.pop()
-                result[-1].append(next_node.val)
-                if next_node.right:
-                    queue.appendleft(next_node.right)
-                if next_node.left:
-                    queue.appendleft(next_node.left) 
-    
-            result.append([])
-        result.pop()
+        
+        return result
             
-
+                
+            
+            
+                    
+            
