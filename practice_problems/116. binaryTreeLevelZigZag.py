@@ -12,20 +12,22 @@ class Solution:
         if not root: return result
         
         que = deque([root])
-        k = 0
+        level = 0
         while que:
-            if k % 2:
-                temp = [node.val for node in reversed(que)]
-            else:
-                temp = [node.val for node in que]
-            result.append(temp)
+            temp = deque()
             for _ in range(len(que)):
                 curr_node = que.popleft()
+                if level % 2:
+                    temp.appendleft(curr_node.val)
+                else:
+                    temp.append(curr_node.val)
+
                 if curr_node.left:
                     que.append(curr_node.left)
                 if curr_node.right:
                     que.append(curr_node.right)
-            k += 1
+            result.append(temp)
+            level += 1
             
         
         return result
