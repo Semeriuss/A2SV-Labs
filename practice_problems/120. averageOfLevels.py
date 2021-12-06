@@ -13,16 +13,12 @@ class Solution:
         que = deque([root])
         res = []
         while que:
-            temp = [node.val for node in que]
-            res.append(sum(temp)/len(temp))
+            summation, k = 0, len(que)
             for _ in range(len(que)):
                 curr_node = que.popleft()
-                temp.append(curr_node.val)
-                if curr_node.left:
-                    temp.append(curr_node.left.val)
-                    que.append(curr_node.left)
-                if curr_node.right:
-                    temp.append(curr_node.right.val)
-                    que.append(curr_node.right)
+                summation += curr_node.val
+                if curr_node.left: que.append(curr_node.left)
+                if curr_node.right: que.append(curr_node.right)
+            res.append(summation/k)
         return res
                 
