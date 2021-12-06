@@ -10,22 +10,8 @@ from collections import deque
 from typing import List
 class Solution:
     def getImportance(self, employees: List['Employee'], id: int) -> int:
-        
-        que =deque()
-        importance = 0
-        for employee in employees:
-            if employee.id == id:
-                importance += employee.importance
-                for subordinate_id in employee.subordinates:
-                    que.append(subordinate_id)
-                break
-        
-        while que:
-            curr_employee_id = que.popleft()
-            for employee in employees:
-                if employee.id == curr_employee_id:
-                    importance += employee.importance
-                    for subordinate_id in employee.subordinates:
-                        que.append(subordinate_id)
-        return importance
-                
+        e_map = {e.id : e for e in employees}
+        def dfs(eid):
+            employee = e_map[eid]
+            return employee.importance + sum(dfs(sub) for sub in employee.subordinates)
+        return dfs(id)
