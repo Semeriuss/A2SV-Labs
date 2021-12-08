@@ -1,57 +1,41 @@
-from collections import deque
+from collections import defaultdict, deque
 from typing import List
 class Solution:
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
-        wordSet = set(wordList)
-        target = list(endWord)
-        
-        if endWord not in wordSet: return 0
-        
-        foundPath = False
-        visited = set()
-        finalCount = 0
-
-        que = deque([(list(beginWord), 0)])
-        visited.add(beginWord)
-        
-        while que:
-            word, count = que.popleft()
-            
+        graph = defaultdict(list)
+        for word in wordList:
             for i in range(len(word)):
-                tmp = word[i]
-                for letter in range(ord('a'), ord('z') + 1):
-                    word[i] = chr(letter)
-                    permutedWord = "".join(word)
-                    if permutedWord not in visited and permutedWord in wordSet:
-                        if not foundPath:
-                            count += 1
-                        foundPath = True
-                        visited.add(permutedWord)
-                        if word == target: 
-                            finalCount = count + 1
-                            return finalCount 
-                            
-                        que.append((word.copy(), count))
-                word[i] = tmp
-            if foundPath: 
-                count += 1
-                foundPath = False
-        return finalCount
-                
+                generic = word[:i] + '_' + word[i+1:]
+                graph[generic].append(word)
+
+        que, visited = deque([(beginWord, 1)]), set([beginWord])
+        while que:
+            for _ in range(len(que)):
+                word, count = que.popleft()
+                if word == endWord: return count
+                for i in range(len(word)):
+                    generic = word[:i] + '_' + word[i+1:]
+                    if generic in graph:
+                        for possibleWord in graph[generic]:
+                            if possibleWord not in visited:
+                                que.append((possibleWord, count + 1))
+                                visited.add(possibleWord)
+        return 0
+
 beginWord = "hit"
 endWord = "cog"
 wordList = ["hot","dot","dog","lot","log","cog"]
 
-# beginWord = "hit"
-# endWord = "cog"
-# wordList = ["hot","dot","dog","lot","log"]
-
-# beginWord = "hit"
-# endWord = "cog"
-# wordList = ["hot","dot","dog","lot","log","cog","hog"]
-
-beginWord = "hiu"
+beginWord = "hit"
 endWord = "cog"
-wordList = ["hut","dot","dog","lot","log","hog","cog"]
+wordList = ["hot","dot","dog","lot","log"]
+
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log","cog","hog"]
+
+# beginWord = "hiu"
+# endWord = "cog"
+# wordList = ["hut","dot","dog","lot","log","hog","cog"]
 print(Solution().ladderLength(beginWord, endWord, wordList))
 
