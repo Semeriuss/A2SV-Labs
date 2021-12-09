@@ -7,17 +7,17 @@ class TreeNode:
 from collections import deque
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
-
-        que = deque([(root, root.val)])
-        goodNodes = 0
-        while que:
-            currNode, localMax = que.popleft()
-            if currNode.val >= localMax:
-                goodNodes += 1
-                localMax = currNode.val
-            if currNode.left:
-                que.append((currNode.left, localMax))
-            if currNode.right:
-                que.append((currNode.right, localMax))
-        return goodNodes
+        self.goodones = 0
+        def dfs(node, localMax):
+            if not node:
+                return 0
+            if node.val >= localMax:
+                localMax = node.val
+                self.goodones += 1
+            if node.left:
+                dfs(node.left, localMax)
+            if node.right:
+                dfs(node.right, localMax)
+        return dfs(root, root.val)
+      
 
