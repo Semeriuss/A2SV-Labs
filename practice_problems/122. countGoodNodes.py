@@ -6,18 +6,8 @@ class TreeNode:
         self.right = right
 from collections import deque
 class Solution:
-    def goodNodes(self, root: TreeNode) -> int:
-        self.goodones = 0
-        def dfs(node, localMax):
-            if not node:
-                return 0
-            if node.val >= localMax:
-                localMax = node.val
-                self.goodones += 1
-            if node.left:
-                dfs(node.left, localMax)
-            if node.right:
-                dfs(node.right, localMax)
-        return dfs(root, root.val)
+    def goodNodes(self, root: TreeNode, localMax: int) -> int:
+        return self.goodNodes(root.left, max(localMax, root.left.val)) + self.goodNodes(root.right, max(localMax, root.right.val)) + self.goodNodes(root.val, max(localMax, root.val)) if root else 0
+        
       
 
