@@ -1,6 +1,4 @@
 from typing import List
-from math import floor, ceil
-
 class Solution:
     def evalRPN(self, tokens: List[str]) -> int:
         stack = []
@@ -8,15 +6,17 @@ class Solution:
         
         for token in tokens:
             if token not in ops:
-                stack.append(token)
+                stack.append(int(token))
             elif token in ops:
                 if len(stack) >= 2:
-                    val1 = stack.pop()
-                    val2 = stack.pop()
-                    res = eval(val2 + token + val1)
-                    res = floor(res) if res > 0 else ceil(res)
-                    stack.append(str(res))
-        return int(stack.pop())
+                    right, left = stack.pop(), stack.pop()
+                    if token == '/': res = int(float(left)/right)
+                    elif token == '+': res = left + right
+                    elif token == '-': res = left - right
+                    else: res = left * right
+                    stack.append(res)
+        return stack.pop()
+        
         
 
 tokens = ["2","1","+","3","*"]
