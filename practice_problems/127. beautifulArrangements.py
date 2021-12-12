@@ -3,30 +3,24 @@ from typing import List
 
 class Solution:
     def countArrangement(self, n: int) -> int:
+        self.count = 0
         nums = list(range(1, n + 1))
-        perms = self.permute(nums, 0, [])
-        beautifulArrangements = 0
-        for perm in perms:
-            print(perm)
-            if self.isBeautifulArrangement(perm):
-                beautifulArrangements += 1
-        return beautifulArrangements
+        self.permuteAndCount(nums, 0, 0, False)
+        return self.count
 
-    def isBeautifulArrangement(self, nums: List) -> bool:
-        for i, num in enumerate(nums):
-            if not (i + 1) % num or not num % (i + 1):
-                continue
-            return False
-        return True
-            
-    def permute(self, nums: List, i: int , res: List) -> List:
+
+    def permuteAndCount(self, nums: List, i: int , count: int, beautifulOrder: bool) -> List:
         if i == len(nums):
-            res.append(nums)
+            if beautifulOrder:
+                self.count += 1
         else:
             perm = nums[:]
             for j in range(i, len(nums)):
                 perm[i], perm[j] = perm[j], perm[i]
-                self.permute(perm, i + 1, res)
-        return res
+                if not (i + 1) % perm[i] or not perm[i] % (i + 1):
+                    beautifulOrder = True
+                    self.permuteAndCount(perm, i + 1, count, beautifulOrder)
+        return count
 
-print(Solution().countArrangement(3))
+
+print(Solution().countArrangement(15))
