@@ -1,9 +1,7 @@
 from typing import List
 
-
 class Solution:
     def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
-        
         res, k = [[]], maxWidth
         for word in words:
             if k - len(word) >= 0:
@@ -19,58 +17,44 @@ class Solution:
                 if k >= 0: 
                     res[-1].append("*")
                     k -= 1
-
-        for j, line in enumerate(res):
-            space, words = 0, 0
-            for i, token in enumerate(line):
-                # print(i, len(line)-1, token, line, j)
-                print(res[len(res) - 1])
-                # if i == len(line) - 1 and token == "*": 
-                #     line[i] = ""
-                #     space += 1
-                if token == "*": space += 1
-                else: words += len(token)
-            
-            wordCount = len(line) - space - 1
-            if maxWidth - words - space > 0: space += maxWidth - words - space
-            print(space, wordCount, line, maxWidth - words - space)
+        for i in range(len(res) - 1):
+            wordCount, spaceCount, wordLen = 0, 0, 0
+            for j, token in enumerate(res[i]):
+                if j == len(res[i]) - 1 and token == "*":
+                    res[i].pop()
+                    spaceCount -= 1
+                elif token == "*": spaceCount += 1
+                else: 
+                    wordCount += 1
+                    wordLen += len(token)
+            if maxWidth - wordLen - spaceCount > 0: spaceCount += maxWidth - wordLen - spaceCount
             even, leftover = 1, 0
-            if wordCount >= 0: 
-                if wordCount == 0: wordCount = 1
-                even, leftover = divmod(space, wordCount)
-                print(even, leftover)
-            print("space", space, "word")
-            
-            if j == len(res) - 1:
-                first, last = True, True
-                rem = maxWidth
-                for i, token in enumerate(line):
-                    if first and token == "*":
-                        line[i] = " "
-                        rem -= 1
-                        first = False
-                    elif i == len(line) - 1:
-                        line[i] = " " * rem
-                    elif token == "*":
-                        line[i] = " "
-                    else:
-                        rem -= len(token)
-                
+            if wordCount - 1 > 0:
+                even, leftover = divmod(spaceCount, wordCount - 1)
             else:
-                first = True
-                for i, token in enumerate(line):
-                    print(line, even, leftover, i)
-                    if first and token == '*':
-                        line[i] = " " * (even + leftover)
-                        first = False
-                    elif token == '*':
-                        line[i] = " " * even  
-                print(line)
-            res[j] = "".join(line)
-            print(len(res[j]))
-            
+                even, leftover = spaceCount, 0
+            rem = maxWidth
+            for j, token in enumerate(res[i]):
+                if token == "*":
+                    res[i][j] = " " *(even)
+            for j, token in enumerate(res[i]):
+                if token.isspace() and leftover:
+                    res[i][j] += " "
+                    leftover -= 1         
+            rem -= sum(len(res[i][j]) for j in range(len(res[i])))
+            if rem > 0: res[i][0] = res[i][0] + (" " * rem)
+            res[i] = "".join(res[i])
+        rem = maxWidth
+        for k, token in enumerate(res[-1]):
+            if token == "*":
+                res[-1][k] = " " 
+        rem -= sum(len(res[-1][j]) for j in range(len(res[-1])))
+        print(rem, res[-1], k, token)
+        if rem > 0: 
+            res[-1] += (" ")*rem
+        res[-1] = "".join(res[-1])
+        if len(res[-1]) > maxWidth: res[-1] = res[-1].rstrip(" ")
         return res
-                
 
 words = ["This", "is", "an", "example", "of", "text", "justification."]
 maxWidth = 16
