@@ -22,38 +22,18 @@ class TreeNode:
 #         self.right = right
 class Solution:
     def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        self.maxsum = float("-inf")
 
-        que = deque([root])
-        maxsum = root.val
-        dp = {}
-        
-        while que:
-            curr = que.popleft()
-            currMax = curr.val
-            leftMax = 0
-            rightMax = 0
-            if curr.left:
-                que.append(curr.left)
-            if curr.right:
-                que.append(curr.right)
+        def maxPathDFS(node: TreeNode) -> int:
+            if not node: return 0
+            leftMax = max(0, node.val + maxPathDFS(node.left))
+            rightMax = max(0, node.val + maxPathDFS(node.right))
+            self.maxsum = max(self.maxsum, leftMax + node.val + rightMax)
+            return max(leftMax, rightMax) + node.val 
 
-            leftMax = max(0, self.maxPathDFS(curr.left, dp, leftMax))
-            rightMax = max(0, self.maxPathDFS(curr.right, dp, rightMax))
-            currMax += leftMax + rightMax
-            maxsum = max(maxsum, currMax)
-        return maxsum
-    
-    def maxPathDFS(self, node: TreeNode, dp: dict, currMax: int = 0) -> int:
-        if node in dp: return dp[node]
-        if not node: return 0
-        if not node.left and not node.right: 
-            dp[node] = max(currMax, currMax + node.val)
-            return dp[node]
-        dp[node] = currMax =  max(currMax, currMax + max(node.val + self.maxPathDFS(node.left, dp, currMax), node.val + self.maxPathDFS(node.right, dp, currMax)))
-        return currMax
-
-
-                
+        maxPathDFS(root)
+        return self.maxsum
+ 
                     
 # [1,2,3]
 # [-10,9,20,null,null,15,7]
