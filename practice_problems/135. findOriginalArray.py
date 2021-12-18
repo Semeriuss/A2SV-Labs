@@ -1,11 +1,13 @@
 from typing import List
-from collections import Counter
+from collections import Counter, deque
 
 class Solution:
     def findOriginalArray(self, changed: List[int]) -> List[int]:
-        numCount = Counter(changed)
-        if numCount[0] % 2: return []
-        for num in sorted(numCount):
-            if numCount[num] > numCount[num * 2]: return []
-            numCount[num * 2] -= numCount[num] if num else numCount[num]//2
-        return list(numCount.elements())
+        res, que = [], deque([])
+        for num in sorted(changed):
+            if que and que[0] == num:
+                que.popleft()
+            else:
+                que.append(num*2)
+                res.append(num)
+        return [] if que else res
