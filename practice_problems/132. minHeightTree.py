@@ -3,37 +3,25 @@ from collections import defaultdict, deque
 
 class Solution:
     def findMinHeightTrees(self, n: int, edges: List[List[int]]) -> List[int]:
-        graph = defaultdict(list)
-        edgeCount = [0]*n
+        graph = defaultdict(set)
 
         if n <= 2: return [node for node in range(n)]
-        for i, edge in enumerate(edges):
-            graph[i]
-            a, b = edge
-            graph[a].append(b)
-            edgeCount[a] += 1
-            graph[b].append(a)
-            edgeCount[b] += 1
+        for a, b in edges:
+            graph[a].add(b)
+            graph[b].add(a)
 
-        que = deque([node for node in graph if edgeCount[node] == 1])
+        que = deque([node for node in graph if len(graph[node]) == 1])
         totalNodes = n
-        # print(edgeCount, graph)
-        # print(que)
         while totalNodes > 2:
-            # print(que, graph)
             totalNodes -= len(que)
 
             for _ in range(len(que)):
                 curr = que.popleft()
                 for neighbor in graph[curr]:
-                    print(edgeCount, que)
-                    edgeCount[neighbor] -= 1
-                    # print(edgeCount, que)
-                    print(curr, neighbor, edgeCount)
-                    if edgeCount[neighbor] ==  1:
+                    graph[neighbor].remove(curr)
+                    if len(graph[neighbor]) ==  1:
                         que.append(neighbor)
 
-        print(que)
         return que
 
 n = 4
