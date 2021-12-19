@@ -20,38 +20,6 @@ def maxSumTwoNoOverlap(nums: List[int], firstLen: int, secondLen: int) -> int:
         finalMaxSum = 0
 
         firstLen, secondLen = (firstLen, secondLen) if firstLen < secondLen else (secondLen, firstLen)
-        # print(firstLen, secondLen)
-        firstLenOpener = 0
-        firstLenCloser = 0 + firstLen
-
-        secondLenOpener = 0
-        secondLenCloser = 0 + secondLen
-
-        for i in range(len(nums) - secondLen):
-            if sum([nums[pos + i] for pos in range(secondLen)]) >= maxSum1:
-                maxSum1 = sum([nums[pos + i] for pos in range(secondLen)])
-                secondLenOpener = i
-                secondLenCloser = i + secondLen - 1
-                print([nums[pos + i] for pos in range(secondLen)])
-        
-        for i in range(len(nums) - firstLen + 1):
-            firstLenOpener = i
-            firstLenCloser = i + firstLen - 1
-            if sum([nums[pos + i] for pos in range(firstLen)]) >= maxSum2 and not overlaps((firstLenOpener, firstLenCloser), (secondLenOpener, secondLenCloser)):
-                maxSum2 = sum([nums[pos + i] for pos in range(firstLen)])
-                firstLenOpener = i
-                firstLenCloser = i + firstLen - 1
-                print([nums[pos + i] for pos in range(firstLen)])
-
-        
-
-        finalMaxSum = maxSum1 + maxSum2
-
-        print(finalMaxSum)
-        print()
-
-        maxSum1 = 0
-        maxSum2 = 0
 
         firstLenOpener = 0
         firstLenCloser = 0 + firstLen
@@ -60,24 +28,18 @@ def maxSumTwoNoOverlap(nums: List[int], firstLen: int, secondLen: int) -> int:
         secondLenCloser = 0 + secondLen
 
         for i in range(len(nums) - firstLen):
-            if sum([nums[pos + i] for pos in range(firstLen)]) >= maxSum1:
-                maxSum1 = sum([nums[pos + i] for pos in range(firstLen)])
-                firstLenOpener = i
-                firstLenCloser = i + firstLen - 1
-                print([nums[pos + i] for pos in range(firstLen)])
-        
-        for i in range(len(nums) - secondLen + 1):
-            secondLenOpener = i
-            secondLenCloser = i + secondLen - 1
-            if sum([nums[pos + i] for pos in range(secondLen)]) >= maxSum2 and not overlaps((firstLenOpener, firstLenCloser), (secondLenOpener, secondLenCloser)):
-                maxSum2 = sum([nums[pos + i] for pos in range(secondLen)])
+            maxSum1 = sum([nums[pos + i] for pos in range(firstLen)])
+            firstLenOpener = i
+            firstLenCloser = i + firstLen - 1
+            for i in range(len(nums) - secondLen):
                 secondLenOpener = i
                 secondLenCloser = i + secondLen - 1
-                print([nums[pos + i] for pos in range(secondLen)])
-        
-        print(maxSum1 + maxSum2)
-        
-        finalMaxSum = max(finalMaxSum, maxSum1 + maxSum2)
+                if not overlaps((firstLenOpener, firstLenCloser), (secondLenOpener, secondLenCloser)):
+                    maxSum2 = sum([nums[pos + i] for pos in range(secondLen)])
+                    secondLenOpener = i
+                    secondLenCloser = i + secondLen - 1
+                print(nums[firstLenOpener : firstLenCloser + 1], nums[secondLenOpener : secondLenCloser + 1], maxSum1 + maxSum2)
+            finalMaxSum = max(finalMaxSum, maxSum1 + maxSum2)
         
         return finalMaxSum
 
