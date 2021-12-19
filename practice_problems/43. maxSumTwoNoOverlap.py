@@ -1,47 +1,19 @@
 from typing import List
 
-def overlaps(window1, window2):
-    openBoundary1, closeBoundary1 = window1
-    openBoundary2, closeBoundary2 = window2
-
-    if openBoundary1 <= openBoundary2 <= closeBoundary1 <= closeBoundary2:
-        return True
-    elif openBoundary2 <= openBoundary1 <= closeBoundary2 <= closeBoundary1:
-        return True
-    elif openBoundary2 <= openBoundary1 <= closeBoundary1 <= closeBoundary2:
-        return True
-    else:
-        return False
-
 def maxSumTwoNoOverlap(nums: List[int], firstLen: int, secondLen: int) -> int:
-        maxSum1 = 0
-        maxSum2 = 0
+    if len(nums) < firstLen + secondLen: return 0
+    for i in range(1, len(nums)):
+        nums[i] += nums[i - 1]
+    
+    res, maxFirst, maxSecond = nums[firstLen + secondLen - 1], nums[firstLen - 1], nums[secondLen - 1]
+    for i in range(firstLen + secondLen, len(nums)):
+        maxFirst = max(maxFirst, nums[i - secondLen] - nums[i - secondLen - firstLen])
+        maxSecond = max(maxSecond, nums[i - firstLen] -  nums[i - secondLen - firstLen])
+        res = max(res, maxFirst + nums[i] - nums[i - secondLen], maxSecond + nums[i] - nums[i - firstLen])
+    return res
+    
 
-        finalMaxSum = 0
-
-        firstLen, secondLen = (firstLen, secondLen) if firstLen < secondLen else (secondLen, firstLen)
-
-        firstLenOpener = 0
-        firstLenCloser = 0 + firstLen
-
-        secondLenOpener = 0
-        secondLenCloser = 0 + secondLen
-
-        for i in range(len(nums) - firstLen):
-            maxSum1 = sum([nums[pos + i] for pos in range(firstLen)])
-            firstLenOpener = i
-            firstLenCloser = i + firstLen - 1
-            for i in range(len(nums) - secondLen):
-                secondLenOpener = i
-                secondLenCloser = i + secondLen - 1
-                if not overlaps((firstLenOpener, firstLenCloser), (secondLenOpener, secondLenCloser)):
-                    maxSum2 = sum([nums[pos + i] for pos in range(secondLen)])
-                    secondLenOpener = i
-                    secondLenCloser = i + secondLen - 1
-                print(nums[firstLenOpener : firstLenCloser + 1], nums[secondLenOpener : secondLenCloser + 1], maxSum1 + maxSum2)
-            finalMaxSum = max(finalMaxSum, maxSum1 + maxSum2)
         
-        return finalMaxSum
 
 tests = [([0,6,5,2,2,5,1,9,4], 1, 2), 
         ([3,8,1,3,2,1,8,9,0], 3, 2), 
