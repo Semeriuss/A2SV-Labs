@@ -6,9 +6,7 @@ class Solution:
         if n == 0: return len(tasks)
         taskmap = list(Counter(tasks).values())
         maxVal = max(taskmap)
-        print(maxVal)
         maxFreq = taskmap.count(maxVal)
-        print(maxFreq)
         return max(len(tasks), (n + 1)*(maxVal - 1) + maxFreq)
 
 tasks = ["A","A","A","B","B","B"]
