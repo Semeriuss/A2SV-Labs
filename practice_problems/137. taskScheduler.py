@@ -1,39 +1,32 @@
 from collections import Counter, deque
 from typing import List
 import heapq
-
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
         if n == 0: return len(tasks)
         
         taskmap = Counter(tasks)
-        
         que = [[-count, task] for task, count in taskmap.items()]
         heapq.heapify(que)
-        minInterval = 0
-        
-        while que:
-            
-            curr = heapq.heappop(que)
-            curr[0] += 1
-            minInterval += 1
 
-            temp = deque()
-            for _ in range(n):
+        minInterval = 0
+        while que:
+            curInterval, temp = -1, []
+            while curInterval < n:
                 if que:
-                    nex = heapq.heappop(que)
-                    nex[0] += 1
                     minInterval += 1
-                    if nex[0] < 0: 
-                        temp.append(nex)        
-                elif curr[0] < 0:
-                    minInterval += 1
-                else: 
+                    curInterval += 1
+                    curr = heapq.heappop(que)
+                    curr[0] += 1
+                    if curr[0] != 0: temp.append(curr)
+                else:
+                    if temp:
+                        minInterval += (n - curInterval)
                     break
+
             for task in temp:
                 heapq.heappush(que, task)
-            if curr[0] < 0: heapq.heappush(que, curr)
-
+        
         return minInterval
 
 tasks = ["A","A","A","B","B","B"]
