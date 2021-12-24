@@ -22,5 +22,5 @@ class Trie:
             current = current.children[c]
         return current.isEndOfWord or isPrefix
 
-    def prefix(self, prefix: str) -> bool:
+    def startsWith(self, prefix: str) -> bool:
         return self.search(prefix, True)
