@@ -1,39 +1,33 @@
+import collections
 from typing import List
-
-
-class TrieNode:
-    def __init__(self):
-        self.children = {}
-        self.isEndOfWord = False
-        
+       
 class Solution:
     def replaceWords(self, dictionary: List[str], sentence: str) -> str:
-        root = TrieNode()  
-        current = root
-        for word in dictionary:
-            for c in word:
-                if c not in current.children: current.children[c] = TrieNode()
-                current = current.children[c] 
-            current.isEndOfWord = True
-            current = root
+        _trie = lambda: collections.defaultdict(_trie) 
+        root = _trie()
         
-        words = sentence.split(" ")
-        res = ""
-        for word in words:
-            index = self.startsAt(root, word)
-            if index:
-                res += word[:index - 1]
-            else:
-                res += word
-            res += " "
-        return res.rstrip(" ")
-    
-    def startsAt(self, root: TrieNode, prefix: str) -> int:
-        current = root
-        for i, c in enumerate(prefix):
-            if current.isEndOfWord: return i + 1
-            if c not in current.children: return 0
-            current = current.children[c]
-        return 0
-            
+        END = True
+        for word in dictionary:
+            current = root
+            for c in word:
+                if c not in current: current[c] = _trie()
+                current = current[c] 
+            current[END] = word
+        
+        def replace(word):
+            current = root
+            for c in word:
+                if c not in current: break
+                current = current[c]
+                if END in current: return current[END]
+            return word
+        
+        return " ".join(map(replace, sentence.split()))
+                
+
+
+dictionary = ["cat", "bat", "rat"]
+sentence = "The cat was rattled by the battle"
+print(Solution().replaceWords(dictionary, sentence))
+
         
