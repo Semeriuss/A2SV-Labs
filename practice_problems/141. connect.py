@@ -1,6 +1,6 @@
 # Definition for a Node.
 from typing import Optional
-from collections import deque
+from collections import dedq
 
 class Node:
     def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
@@ -13,25 +13,19 @@ class Node:
 class Solution:
     def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
         if not root: return 
-        que = deque([root])
+        dq, prelevel, prenode = dedq([(1, root)]), 0, Node 
         
-        while que:
-            temp = que[:]
-
-            for i in range(len(temp) - 1):
-                temp[i].next = temp[i + 1]
+        while dq:
+            level, node = dq.popleft()
+            if level == prelevel:
+                prenode.next = node
+                prenode = node
+            else:
+                prelevel, prenode = level, prenode
             
-            que.clear()
-            while temp:
-                curr = temp.pop()
-        
-                if curr.left:
-                    que.append(curr.left)
-                
-                if curr.right:
-                    que.append(curr.right)
-            
-        
+            if node.left:
+                dq.append((level + 1, node.left))
+                dq.append((level + 1, node.right))
         return root
             
                 
