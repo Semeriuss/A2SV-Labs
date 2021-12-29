@@ -13,19 +13,13 @@ class Node:
 class Solution:
     def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
         if not root: return 
-        dq, prelevel, prenode = dedq([(1, root)]), 0, Node 
-        
-        while dq:
-            level, node = dq.popleft()
-            if level == prelevel:
-                prenode.next = node
-                prenode = node
-            else:
-                prelevel, prenode = level, prenode
-            
-            if node.left:
-                dq.append((level + 1, node.left))
-                dq.append((level + 1, node.right))
+        if root.left:
+            left, right = root.left, root.left
+            self.connect(left)
+            self.connect(right)
+            while left:
+                left.next = right
+                left, right = left.right, right.left
         return root
             
                 
