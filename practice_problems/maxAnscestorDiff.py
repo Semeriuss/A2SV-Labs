@@ -9,29 +9,18 @@ class TreeNode:
         self.right = right
 class Solution:
     def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
-        self.v = 0
-        minval = float("inf")
-        minlevel = None
-        dq = deque([(0, root)])
-        
-        while dq:            
-            temp = dq.copy()
-            dq.clear()
-            while temp:
-                curlevel, curnode = temp.popleft()
-                if curnode.val < minval:
-                    minval = curnode.val
-                    minlevel = curlevel
-                    
-                if curnode.left:
-                    dq.append((curlevel + 1, curnode.left))
-                if curnode.right:
-                    dq.append((curlevel + 1, curnode.right))
-            
-            if dq:
-                curlevel = dq[0][0]
-                curval = max([node.val for _, node in dq])
-            
-                if curlevel != minlevel:
-                    self.v = max(self.v, abs(curval - minval))
-        return self.v
+        self.res = 0
+        self.min, self.max = float('inf'), float('-inf')
+        def dfs(node, minsofar, maxsofar):
+            if not node.left and not node.right: return node.val
+            if node.left:
+                minsofar = min(minsofar, node.left.val)
+                maxsofar = max(maxsofar, node.left.val)
+                self.res = max(self.res, dfs(node.left, minsofar, maxsofar))
+            if node.right:
+                minsofar = min(minsofar, node.right.val)
+                maxsofar = max(maxsofar, node.right.val)
+                self.res = max(self.res, dfs(node.right, minsofar, maxsofar))
+            return max(abs(node.val - minsofar), abs(node.val - maxsofar))
+        dfs(root, float("inf"), float("-inf"))
+        return self.res
