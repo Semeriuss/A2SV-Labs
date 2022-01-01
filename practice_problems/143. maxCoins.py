@@ -1,20 +1,15 @@
 from typing import List
-from functools import reduce
-from operator import __mul__
+from functools import cache, reduce
 
 class Solution:
     def maxCoins(self, nums: List[int]) -> int:
         nums = [1] + [num for num in nums if num > 0] + [1]
         n = len(nums)
-        dp = [[0]*n for _ in range(n)]
 
-        for k in range(2, n):
-            for left in range(0, n - k): 
-                right = left + k   
-                for i in range(left + 1, right): 
-                    dp[left][right] = max(dp[left][right], nums[left] * nums[i] * nums[right] + dp[left][i] + dp[i][right])
-        return dp[0][n - 1]
-
+        @cache  
+        def burst(i, j):
+                return max([nums[i] * nums[k] * nums[j] + burst(i, k) + burst(k, j) for k in range(i + 1, j)] or [0]) 
+        return burst(0, n - 1)
 
 nums = [3,1,5,8]
 nums = [4,6,7,1]
