@@ -5,11 +5,12 @@ class Solution:
     def maxCoins(self, nums: List[int]) -> int:
         nums = [1] + [num for num in nums if num > 0] + [1]
         n = len(nums)
+        dp = [[0 for _ in range(n)] for _ in range(n)]
 
-        @cache  
-        def burst(i, j):
-                return max([nums[i] * nums[k] * nums[j] + burst(i, k) + burst(k, j) for k in range(i + 1, j)] or [0]) 
-        return burst(0, n - 1)
+        for i in range(n - 2, - 1, -1):
+            for j in range(i + 2, n):
+                dp[i][j] =  max([nums[i] * nums[k] * nums[j] + dp[i][k] + dp[k][j] for k in range(i + 1, j)]) 
+        return dp[0][n - 1]
 
 nums = [3,1,5,8]
 nums = [4,6,7,1]
