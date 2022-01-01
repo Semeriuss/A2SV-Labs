@@ -1,4 +1,5 @@
 import sys
+from math import comb
 
 t = int(input())
 
@@ -9,24 +10,24 @@ for i in range(t):
     tests.append(((n,l,r), a))
 
 def limitPairs(left, right, nums):
-    possiblePair = set()
-    count = 0
-    for num in nums:
-        if num in possiblePair:
-            count += 1
-
-        if left - num > 0:
-            possibles = left - num
-            while left + possibles <= right:
-                possiblePair.add(possibles)
-                possibles += 1
-            
-        if right - num > 0:
-            possibles = right - num
-            while right + possibles >= left:
-                possiblePair.add(possibles)
-                possibles -= 1    
-    return count
+    
+    nums.sort()
+    n = len(nums)
+    badones = 0
+    lp, rp = 0, n-1
+    while lp < rp:
+        if nums[rp] + nums[lp] < left:
+            badones += rp - lp    
+            break    
+        rp -= 1
+    lp, rp = 0, n-1
+    while lp < rp:
+        if nums[rp] + nums[lp] > right:
+            badones += rp - lp    
+            break    
+        lp += 1
+    
+    return comb(n, 2) - badones
 
 
 for test in tests:

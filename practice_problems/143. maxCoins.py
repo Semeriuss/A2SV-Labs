@@ -6,27 +6,23 @@ class Solution:
     def maxCoins(self, nums: List[int]) -> int:
         balloons = [1] + nums + [1]
         self.res = 0
-        def dfs(b):
-            if len(b) < 3:
-                return 0
+        def dfs(balloon, res):
+            if len(balloon) < 3:
+                return balloon[1] * balloon[0]
+            print(self.res, res, balloon)
+            for i in range(1, len(balloon)):
+                tempV, tempB = self.burst(balloon, i)
+                dfs(tempB, res + tempV)
+                self.res = max(self.res, res)
+            
+            self.res = max(self.res, res)
+            return res
+        dfs(balloons, 0)
+        return self.res
 
-            first, firstB = self.burst(b, 1)
-            second, secondB = self.burst(b, 2)
-            # self.res += max(first, second)
-            # print(firstB, secondB, b) #, first, second)
-            # dfs(firstB) if first > second else dfs(secondB)
-            f = first + dfs(firstB)
-            print("f => ", firstB, "   ", f)
-            s = second + dfs(secondB)
-            print("s => ", secondB, "   ", s)
-            third, thirdB = self.burst(b, 3)
-            t = third + dfs(thirdB)
-            return max(f, s, t)
-        return dfs(balloons)
-        # return self.res
     
     def burst(self, balloons, indexToRemove):
-        if len(balloons) < 3: return balloons[1], [1, 1]
+        # if len(balloons) < 3: return balloons[1], [1, 1]
         res = reduce(__mul__, balloons[indexToRemove - 1: indexToRemove + 2])
         modified = balloons[:indexToRemove] + balloons[indexToRemove + 1:] 
         return res, modified
@@ -36,6 +32,7 @@ nums = [4,6,7,1]
 nums = [2,3,4,9,3,2]
 nums = [2,3,4,9,3]
 nums = [2,3,4,3]
+nums = [2,3,2,3]
 print(Solution().maxCoins(nums))
 
 """

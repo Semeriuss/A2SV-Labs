@@ -12,20 +12,32 @@ def makePalindrome(a, b, s):
     leftEnd = []
     rightEnd = deque()
     while sp < ep:
-        # print(leftEnd, rightEnd, a, b)
+        print(leftEnd, rightEnd, a, b)
         if s[sp] == s[ep] == "?":
-            if a > 1:
+            if a%2 == 0 and a > 1:
                 a -= 2
                 rightEnd.appendleft("0")
                 leftEnd.append("0")
             
-            elif b > 1:
+            elif b%2 == 0 and b > 1:
+                print("hi")
                 b -= 2
                 rightEnd.appendleft("1")
                 leftEnd.append("1")
             
             else:
-                return -1 
+                if a > 1:
+                    a -= 2
+                    rightEnd.appendleft("0")
+                    leftEnd.append("0")
+                
+                elif b > 1:
+                    b -= 2
+                    rightEnd.appendleft("1")
+                    leftEnd.append("1")
+                
+                else:
+                    return -1 
 
         elif s[sp] == "?" and s[ep] != "?":
             if s[ep] == "1":
@@ -71,7 +83,7 @@ def makePalindrome(a, b, s):
                 rightEnd.appendleft(s[ep])
             else:
                 return -1
-        # print(leftEnd, rightEnd, a, b)
+        print(leftEnd, rightEnd, a, b)
         sp += 1
         ep -= 1
     
@@ -89,7 +101,7 @@ def makePalindrome(a, b, s):
         
         else:
             # print(s[sp], s[ep], sp, ep)
-            # print(len(leftEnd) + len(rightEnd), len(list(s)), "lennn")
+            print(len(leftEnd) + len(rightEnd), len(list(s)), "lennn")
             if len(leftEnd) + len(rightEnd) < len(list(s)):
                 if s[sp] != "?":
                     leftEnd.append(s[sp])
@@ -105,7 +117,7 @@ def makePalindrome(a, b, s):
                         return -1
                     
 
-    # print(leftEnd, rightEnd, a, b)
+    print(leftEnd, rightEnd, a, b)
     leftEnd.extend(rightEnd)
     return "".join(leftEnd) if a == b == 0 else -1
 
@@ -120,3 +132,6 @@ if __name__ == "__main__":
     print(*res, sep="\n")
 
 
+# 5 4
+# ??????0??
+# 010101010
