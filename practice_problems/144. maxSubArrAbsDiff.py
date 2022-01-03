@@ -1,37 +1,24 @@
 from typing import List
 import heapq
+from collections import deque
 
 class Solution:
     def longestSubarray(self, nums: List[int], limit: int) -> int:
+        minD, maxD = deque(), deque()
         
-        sp, ep, maxlen = 0, 0, 0
-        n = len(nums)
-        maxV, minV = nums[sp], nums[ep]
-        minheap, maxheap = [], []
-        while ep < n:
-            if maxV - minV <= limit:
-                maxlen = max(maxlen, ep - sp + 1)
-                ep += 1
-                if ep >= n: break
-                maxV = max(maxV, nums[ep])
-                minV = min(minV, nums[ep])
-                heapq.heappush(minheap, (nums[ep], ep))
-                heapq.heappush(maxheap, (-nums[ep], ep))
-            else:
-                sp += 1
-                if sp >= n: break
-                if nums[sp - 1] == minV:
-                    while minheap:
-                        curr, ind = heapq.heappop(minheap)
-                        if ind >= sp:
-                            # sp = ind
-                            minV = min(nums[ep], nums[sp], curr)
-                            break
-                elif nums[sp - 1] == maxV:
-                    while maxheap:
-                        curr, ind = heapq.heappop(maxheap)
-                        if ind >= sp:
-                            maxV = max(nums[sp], nums[ep], -curr)
-                            break
+        i = 0
+        
+        for num in nums:
+            while maxD and num > maxD[-1]: maxD.pop()
+            while minD and num < minD[-1]: minD.pop()
 
-        return maxlen
+            maxD.append(num)
+            minD.append(num)
+
+            if maxD[0] - minD[0] > limit:
+                if nums[i] == maxD[0]: maxD.popleft()
+                if nums[i] == minD[0]: minD.popleft()
+
+                i += 1
+        
+        return len(nums) - i
