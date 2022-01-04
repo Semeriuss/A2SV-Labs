@@ -1,39 +1,9 @@
 def divisibleSumPairs(n, k, ar):
-    ar.sort()
-    rem = [[] for _ in range(k)]
-    
-    for num in ar:
-        rem[num % k].append(num)
-    
-    print(rem)
+    rem = [0] * k
     count = 0
-    for i in range(len(rem[0]) - 1):
-        for j in range(i + 1, len(rem[0])):
-            if rem[0][i] != rem[0][j]:
-                count += 1
-            else:
-                count += 2
-            
-    for i in range(1, k//2 + 1):
-        if i == k - i:
-            if not rem[i]: continue
-            for j in range(len(rem[i]) - 1):
-                for m in range(j + 1, len(rem[i])):
-                    if rem[i][j] != rem[i][m]:
-                        count += 1
-                    else:
-                        count += 2
-        else:
-            mod1 = rem[i]
-            mod2 = rem[k - i]
-            if not mod1 or not mod2: continue
-            for i in range(len(mod1)):
-                for j in range(len(mod2)):
-                    if mod1[i] != mod2[j]:
-                        count += 1
-                    else:
-                        count += 2
-
+    for num in ar:
+        count += rem[(k - num %k) % k]
+        rem[num%k] += 1
     return count
 
 n, k = 5, 2
