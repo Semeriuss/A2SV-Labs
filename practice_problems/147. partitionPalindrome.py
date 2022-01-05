@@ -4,49 +4,43 @@ from typing import List
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
     
-        def isPalindrome(s):
+        def isPalindrome(s, memo):
+            if len(s) == 1: return True
+            if s in memo: return memo[s]
             sp, ep = 0, len(s) - 1
             while sp < ep:
                 if s[sp] != s[ep]:
-                    return False
+                    memo[s] = False
+                    return memo[s]
                 sp += 1
                 ep -= 1
-            return True
+            memo[s] = True
+            return memo[s]
         
-        def partition(s):
-            for p in range(len(s)):
-                prefix, suffix = s[:p+1], s[p+1:]
-                for part in partition(suffix):
-                    yield [prefix] + part
-            
+        def partition(s):          
+            if len(s) == 0:
+                yield []
+            else:
+                for p in range(1, len(s) + 1):
+                    prefix, suffix = s[:p], s[p:]
+                    for part in partition(suffix):
+                        yield [prefix] + part
 
-                
-
-
-
-        palindromes = [list(s)] 
-        for p in range(1, len(s)):
-            partition = []
-            for i in range(p):
-                partition.append()
-                if isPalindrome(s[:i+1]) and isPalindrome(s[i+1:]):
-                    palindromes.append([s[:i+1], s[i+1:]])
+        partitions, palindromes = [*partition(s)], [] 
+        memo = {}
+        for part in partitions:
+            isPalindromic = True
+            for p in part:
+                if not isPalindrome(p, memo):
+                    isPalindromic = False
+                    break
+            if isPalindromic: palindromes.append(part)
         return palindromes
 
 
 s = "aab"
 s = "a"
 s = "baa"
-# print(Solution().partition(s))
+s = "aaabb"
+print(Solution().partition(s))
 
-def partition(s):
-    for p in range(1, len(s)+1):
-        if len(s) > 0:
-            prefix, suffix = s[:p], s[p:]
-            for part in partition(suffix):
-                yield [prefix] + part
-    else:
-        yield []
-
-y = [*partition("12")]
-print(y)
