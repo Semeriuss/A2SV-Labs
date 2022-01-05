@@ -3,20 +3,19 @@ from typing import List
 
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
-    
-        def dfs(s, path, res):
+        self.res = []
+        def segment(s, path):
             if not s:
-                res.append(path[:])
+                self.res.append(path[:])
                 return
-            for i in range(1, len(s)+1):
-                if s[:i] == s[i-1::-1]:
-                    path.append(s[:i])
-                    dfs(s[i:], path, res)
+            for i in range(len(s)):
+                if s[:i+1] == s[i::-1]:
+                    path.append(s[:i+1])
+                    segment(s[i+1:], path)
                     path.pop()
-            return res
-        res = []
-        dfs(s, [], res)
-        return res
+        segment(s, [])
+        return self.res
+                
 
 s = "aab"
 s = "a"
