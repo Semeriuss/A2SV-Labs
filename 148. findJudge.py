@@ -3,14 +3,13 @@ from typing import List
 class Solution:
     def findJudge(self, n: int, trust: List[List[int]]) -> int:
         outdegree = [0 for _ in range(n)]
-        children = [0 for _ in range(n)]
         
         for a, b in trust:
-            outdegree[a - 1] += 1
-            children[b - 1] += 1
+            outdegree[a - 1] -= 1
+            outdegree[b - 1] += 1
             
-        for p, c in enumerate(children):
-            if c == n - 1 and not outdegree[p]:
+        for p, c in enumerate(outdegree):
+            if c == n - 1:
                 return p + 1
         return -1
     
