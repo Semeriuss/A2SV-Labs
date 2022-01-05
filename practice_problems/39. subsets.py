@@ -16,8 +16,23 @@ def subsets(nums):
     
     return finalList
 
-test = [1, 2,3]
-print(subsets(test))
+def subsets2(nums):
+    subsets = []
+    def parse2(A, subset, index):
+        subsets.append(subset[:])
+        print(subset)
+        for i in range(index, len(A)):
+            if A[i] not in subset:
+                subset.append(A[i])
+                parse2(A, subset, index + 1)
+                subset.pop()
+        return
+    subset = []
+    parse2(nums, subset, 0)
+    return subsets
+
+test = [1, 2, 3]
+print(subsets2(test))
 
 ##tests = [([1, 2, 3], [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]),
 ##         ([0], [[],[0]])]
