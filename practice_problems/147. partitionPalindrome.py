@@ -12,6 +12,17 @@ class Solution:
                 sp += 1
                 ep -= 1
             return True
+        
+        def partition(s):
+            for p in range(len(s)):
+                prefix, suffix = s[:p+1], s[p+1:]
+                for part in partition(suffix):
+                    yield [prefix] + part
+            
+
+                
+
+
 
         palindromes = [list(s)] 
         for p in range(1, len(s)):
@@ -26,4 +37,16 @@ class Solution:
 s = "aab"
 s = "a"
 s = "baa"
-print(Solution().partition(s))
+# print(Solution().partition(s))
+
+def partition(s):
+    for p in range(1, len(s)+1):
+        if len(s) > 0:
+            prefix, suffix = s[:p], s[p:]
+            for part in partition(suffix):
+                yield [prefix] + part
+    else:
+        yield []
+
+y = [*partition("12")]
+print(y)
