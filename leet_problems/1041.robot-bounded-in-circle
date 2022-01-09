@@ -1,0 +1,41 @@
+class Solution:
+    def isRobotBounded(self, instructions: str) -> bool:
+        
+        NS = [0, 1]
+        EW = [1, 0]
+        
+        currDir = NS
+        netDir = "N"
+        currPos = [0, 0]
+        
+        op = 0
+        while op < len(instructions):
+            if instructions[op] == "G":
+                currPos[0] += currDir[0]
+                currPos[1] += currDir[1]
+                op += 1
+            else:
+                nextDir = ""
+                while op < len(instructions) and instructions[op] != "G":
+                    nextDir += instructions[op]
+                    op += 1
+                netPath = 0
+                
+                dirCount = Counter(nextDir)
+                if "L" in dirCount and "R" in dirCount: netPath = abs(dirCount["L"] - dirCount["R"])
+                elif "L" in dirCount: netPath, netDir = dirCount["L"], "L"
+                elif "R" in dirCount: netPath, netDir = dirCount["R"], "R"
+                if netDir == "L":
+                    if netPath == 1: currDir, netDir = [-num for num in EW], "L"
+                    elif netPath % 4 == 0: currDir, netDir = currDir, "N"
+                    elif netPath % 3 == 0: currDir, netDir = EW, "R"
+                    elif netPath % 2 == 0: currDir, netDir = [-num for num in currDir], "S"
+                elif netDir == "R":
+                    if netPath == 1: currDir, netDir = EW, "R"
+                    elif netPath % 4 == 0: currDir, netDir = currDir, "N"
+                    elif netPath % 3 == 0: currDir, netDir = [-num for num in EW], "L"
+                    elif netPath % 2 == 0: currDir, netDir = [-num for num in currDir], "S"
+        print(currPos, netDir)
+        return currPos == [0, 0] or netDir != "N"
+                
+                
