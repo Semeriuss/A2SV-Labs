@@ -4,8 +4,7 @@ class Solution:
     def findMaximumXOR(self, nums: List[int]) -> int:
 
         trie = {}
-        nums.sort(reverse=True)
-        maxbits = len(bin(nums[0])) - 2
+        maxbits = len(bin(max(nums))) - 2
         
         for num in nums:
             num_in_bin = bin(num).lstrip('0b')
