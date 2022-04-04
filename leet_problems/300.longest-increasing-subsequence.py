@@ -10,28 +10,23 @@ from typing import List
 
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        # print(len(nums))
-        maxlen = 0
-        for i, num in enumerate(nums):
-            mark = num
-            count = 1
-            stack = [mark]
-            j = i + 1
-            while j < len(nums):
-                if nums[j] > mark:
-                    if stack[-1] >= nums[j]:
-                        maxlen = max(maxlen, count)
-                        print(stack)
-                        while stack[-1] >= nums[j]:
-                            stack.pop()
-                            count -= 1
-                    
-                    stack.append(nums[j])
-                    count += 1
-                j += 1
-            maxlen = max(maxlen, count)
-        return maxlen
+        N = len(nums)
+        self.maxlen = 1
+        def dp(curmark, curpos, maxsofar):
+            if N - curpos - 1 + maxsofar < self.maxlen:
+                return
+            if curpos >= N:
+                self.maxlen = max(self.maxlen, maxsofar)
+                return
+            if nums[curpos] > curmark:
+                dp(nums[curpos], curpos + 1, maxsofar + 1)
+            dp(curmark, curpos + 1, maxsofar)
 
+        i = 0
+        while N - i - 1 >= self.maxlen:
+            dp(nums[i], i, 1)
+            i += 1
+        return self.maxlen
         
 # @lc code=end
 
