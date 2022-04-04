@@ -5,18 +5,20 @@
 #
 
 # @lc code=start
+from bisect import bisect_left
 from typing import List
 
 
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        N = len(nums)
-        LIS = [1]*N
-        for i in range(N - 1, -1, -1):
-            for j in range(i + 1, N):
-                if nums[j] > nums[i]:
-                    LIS[i] = max(LIS[i], 1 + LIS[j])
-        return max(LIS)
+        temp = [nums[0]]
+        for num in nums:
+            pos = bisect_left(temp, num)
+            if pos == len(temp):
+                temp.append(num)
+            elif temp[pos] > num:
+                temp[pos] = num
+        return len(temp)
         
 # @lc code=end
 
