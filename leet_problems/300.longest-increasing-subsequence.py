@@ -11,22 +11,12 @@ from typing import List
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
         N = len(nums)
-        self.maxlen = 1
-        def dp(curmark, curpos, maxsofar):
-            if N - curpos - 1 + maxsofar < self.maxlen:
-                return
-            if curpos >= N:
-                self.maxlen = max(self.maxlen, maxsofar)
-                return
-            if nums[curpos] > curmark:
-                dp(nums[curpos], curpos + 1, maxsofar + 1)
-            dp(curmark, curpos + 1, maxsofar)
-
-        i = 0
-        while N - i - 1 >= self.maxlen:
-            dp(nums[i], i, 1)
-            i += 1
-        return self.maxlen
+        LIS = [1]*N
+        for i in range(N - 1, -1, -1):
+            for j in range(i + 1, N):
+                if nums[j] > nums[i]:
+                    LIS[i] = max(LIS[i], 1 + LIS[j])
+        return max(LIS)
         
 # @lc code=end
 
