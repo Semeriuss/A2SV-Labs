@@ -1,24 +1,18 @@
 def solve(k, s):
     counter = [0 for i in range(26)]
-    res = []
+    res = ["a" for _ in range(k)]
     for c in s:
         counter[ord(c) - ord('a')] += 1
     
     charCount = 0
-    for i, count in enumerate(counter):
-        net = count - k
-        print(chr(ord('a') + i) + " " + str(count) + " " + str(k) + " " + str(net) + " " + str(res))
-        if charCount >= k:
-                break
-        if net < 0:
-            factor = (min(abs(net), k - charCount))
-            res.append(chr(ord('a') + i) * factor)
-            charCount += factor
+    for j in range(k):
+        ct = 0
+        while (ct < n/k and counter[ct] > 0):
+            counter[ct] -= 1
+            ct += 1
+        res[j] = chr(ord('a') + ct )
 
-    if charCount < k:
-        res.append(chr(ord(res[-1]) + 1))
-
-    return "".join(res[::-1])
+    return "".join(res)
 
 if __name__ == "__main__":
     t = int(input())
