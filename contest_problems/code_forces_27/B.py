@@ -2,8 +2,8 @@ n, s = map(int, input().split())
 forward = list(map(int, input().split()))
 reverse = list(map(int, input().split()))
 
-turns = [i for i, open in enumerate(forward) if open]
-rTurns = [i for i, open in enumerate(reverse) if open]
+turns = set([i for i, open in enumerate(forward) if open])
+rTurns = set([i for i, open in enumerate(reverse) if open])
 
 if 1 == s:
     print("YES")
