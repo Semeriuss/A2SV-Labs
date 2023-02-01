@@ -2,7 +2,7 @@ from ast import List
 
 
 class Solution:
-    # O(N^2) time, O(N^2) auxiliary space
+    # O(N*M * N^2) time, O(N^2) auxiliary space
     def matrixBlockSum(self, mat: List[List[int]], k: int) -> List[List[int]]:
         N, M = len(mat), len(mat[0])
         answer = [[0] * M for _ in range(N)]
