@@ -1,5 +1,5 @@
 class Solution:
-    # O(N) time | O(N) space
+    # O(N) time | O(N) space - where N is the number of digits in the input number
     def numberToWords(self, num: int) -> str:
         if num == 0:
             return 'Zero'
