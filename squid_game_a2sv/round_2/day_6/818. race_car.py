@@ -15,4 +15,5 @@ class Solution:
                 continue
             seen.add((curPos, curSpeed))
             que.append((steps + 1, curPos + curSpeed, curSpeed*2))
-            que.append((steps + 1, curPos, -1 if curSpeed > 0 else 1))
+            if (curPos + curSpeed < target and curSpeed < 0) or (curPos + curSpeed > target and curSpeed > 0):
+                que.append((steps + 1, curPos, -1 if curSpeed > 0 else 1))
