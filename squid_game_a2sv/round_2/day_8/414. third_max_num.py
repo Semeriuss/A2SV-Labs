@@ -3,7 +3,7 @@ import heapq
 
 
 class Solution:
-    # O(N) time and space
+    # O(N) time and space -> Can be improved to O(1) space by using three variables
     def thirdMax(self, nums: List[int]) -> int:
         heap = []
         maxNum = 0
