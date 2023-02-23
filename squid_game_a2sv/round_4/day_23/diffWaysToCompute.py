@@ -3,6 +3,7 @@ from typing import List
 
 
 class Solution:
+    # Catalan Number?
     @lru_cache()
     def diffWaysToCompute(self, expr: str) -> List[int]:
         if expr.isdigit():
