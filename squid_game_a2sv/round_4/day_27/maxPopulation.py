@@ -1,3 +1,7 @@
+from typing import List
+from collections import defaultdict
+
+
 class Solution:
     # O(N) time and space
     def maximumPopulation(self, logs: List[List[int]]) -> int:
